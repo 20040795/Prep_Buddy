@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -11,6 +12,7 @@ import ForumDiscussion from "./pages/ForumDiscussion";
 import AddExperience from "./pages/AddExperience";
 import Profile from "./pages/Profile";
 import GraduatePrograms from "./pages/GraduatePrograms";
+
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
@@ -21,11 +23,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-      {/* here is the public routes that is where any user can regitser and log in */}
+        
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-       {/* here is the app routes */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/companies/:companySlug" element={<CompanyDetails />} />
@@ -37,12 +38,12 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/graduates" element={<GraduatePrograms />} />
 
-        {/* here is the admin routes */}
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin/questions" element={<AdminQuestions />} />
         <Route path="/admin/experiences" element={<AdminExperiences />} />
+
       </Routes>
     </BrowserRouter>
   );
