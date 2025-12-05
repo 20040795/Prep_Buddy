@@ -13,5 +13,12 @@ export const initializeDatabase = () => {
     if (err) console.log("Error creating companies table:", err);
     else console.log("Companies table ready");
   });
-  
+  const experiencesTable = `
+    CREATE TABLE IF NOT EXISTS experiences (id INT AUTO_INCREMENT PRIMARY KEY,user_id INT,company_id INT,job_role VARCHAR(100),difficulty VARCHAR(20),experience_text TEXT,questions TEXT,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP); `;
+  db.query(experiencesTable, (err) => {
+    if (err) console.log("Error creating experiences table:", err);
+    else console.log(" Experiences table ready");
+  });
+
+ 
 };
