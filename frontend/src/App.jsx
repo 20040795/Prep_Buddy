@@ -21,6 +21,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import AdminQuestions from "./pages/admin/AdminQuestions";
 import AdminExperiences from "./pages/admin/AdminExperiences";
 
+import Navbar from "./components/Navbar";
 
 const theme = createTheme({
   palette: {
@@ -39,36 +40,85 @@ const theme = createTheme({
   shape: { borderRadius: 10 },
 });
 
-
 export default function App() {
+  const isLogged = !!localStorage.getItem("token");
+
+  const isAdmin =
+    localStorage.getItem("user") &&
+    JSON.parse(localStorage.getItem("user")).role === "admin";
+
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
+        {isLogged && <Navbar />}
+
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/companies" element={<Companies />} />
-          <Route path="/companies/:companySlug" element={<CompanyDetails />} />
-          <Route path="/coding" element={<CodingPractice />} />
-          <Route path="/forum" element={<Forum />} />
-          <Route path="/forum/ask" element={<AskQuestion />} />
-          <Route path="/forum/:id" element={<ForumDiscussion />} />
-          <Route path="/add-experience" element={<AddExperience />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/graduates" element={<GraduatePrograms />} />
+         
+          <Route 
+            path="/dashboard" 
+            element={isLogged ? <Dashboard /> : <Login />} 
+          />
+          <Route 
+            path="/companies" 
+            element={isLogged ? <Companies /> : <Login />} 
+          />
+          <Route 
+            path="/companies/:companySlug" 
+            element={isLogged ? <CompanyDetails /> : <Login />} 
+          />
+          <Route 
+            path="/coding" 
+            element={isLogged ? <CodingPractice /> : <Login />} 
+          />
+          <Route 
+            path="/forum" 
+            element={isLogged ? <Forum /> : <Login />} 
+          />
+          <Route 
+            path="/forum/ask" 
+            element={isLogged ? <AskQuestion /> : <Login />} 
+          />
+          <Route 
+            path="/forum/:id" 
+            element={isLogged ? <ForumDiscussion /> : <Login />} 
+          />
+          <Route 
+            path="/add-experience" 
+            element={isLogged ? <AddExperience /> : <Login />} 
+          />
+          <Route 
+            path="/profile" 
+            element={isLogged ? <Profile /> : <Login />} 
+          />
+          <Route 
+            path="/graduates" 
+            element={isLogged ? <GraduatePrograms /> : <Login />} 
+          />
 
-          
+         
           <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/users" element={<AdminUsers />} />
-          <Route path="/admin/questions" element={<AdminQuestions />} />
-          <Route path="/admin/experiences" element={<AdminExperiences />} />
+          <Route
+            path="/admin/dashboard"
+            element={isAdmin ? <AdminDashboard /> : <AdminLogin />}
+          />
+          <Route
+            path="/admin/users"
+            element={isAdmin ? <AdminUsers /> : <AdminLogin />}
+          />
+          <Route
+            path="/admin/questions"
+            element={isAdmin ? <AdminQuestions /> : <AdminLogin />}
+          />
+          <Route
+            path="/admin/experiences"
+            element={isAdmin ? <AdminExperiences /> : <AdminLogin />}
+          />
         </Routes>
-
       </ThemeProvider>
     </BrowserRouter>
   );
