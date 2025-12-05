@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -21,30 +21,26 @@ import AdminExperiences from "./pages/admin/AdminExperiences";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/companies" element={<Companies />} />
-        <Route path="/companies/:companySlug" element={<CompanyDetails />} />
-        <Route path="/coding" element={<CodingPractice />} />
-        <Route path="/forum" element={<Forum />} />
-        <Route path="/forum/ask" element={<AskQuestion />} />
-        <Route path="/forum/:id" element={<ForumDiscussion />} />
-        <Route path="/add-experience" element={<AddExperience />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/graduates" element={<GraduatePrograms />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/companies" element={<Companies />} />
+      <Route path="/companies/:companySlug" element={<CompanyDetails />} />
+      <Route path="/coding" element={<CodingPractice />} />
+      <Route path="/forum" element={<Forum />} />
+      <Route path="/forum/ask" element={<AskQuestion />} />
+      <Route path="/forum/:id" element={<ForumDiscussion />} />
+      <Route path="/add-experience" element={<AddExperience />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/graduates" element={<GraduatePrograms />} />
 
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<AdminUsers />} />
-        <Route path="/admin/questions" element={<AdminQuestions />} />
-        <Route path="/admin/experiences" element={<AdminExperiences />} />
-
-      </Routes>
-    </BrowserRouter>
+      <Route path="/admin" element={<AdminLogin />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/users" element={<AdminUsers />} />
+      <Route path="/admin/questions" element={<AdminQuestions />} />
+      <Route path="/admin/experiences" element={<AdminExperiences />} />
+    </Routes>
   );
 }
