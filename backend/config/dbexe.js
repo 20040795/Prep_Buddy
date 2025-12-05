@@ -26,5 +26,16 @@ export const initializeDatabase = () => {
     else console.log("Coding Questions table ready");
   });
 
-
+  const forumTable = `
+    CREATE TABLE IF NOT EXISTS forum_posts (id INT AUTO_INCREMENT PRIMARY KEY,user_id INT,title VARCHAR(255),description TEXT, tags VARCHAR(100),created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP); `;
+  db.query(forumTable, (err) => {
+    if (err) console.log("Error creating forum table:", err);
+    else console.log("Forum table ready");
+  });
+  const gradTable = `
+    CREATE TABLE IF NOT EXISTS graduate_programs (id INT AUTO_INCREMENT PRIMARY KEY,company VARCHAR(100),link VARCHAR(255),deadline DATE ); `;
+  db.query(gradTable, (err) => {
+    if (err) console.log(" Error creating graduate programs table:", err);
+    else console.log(" Graduate Programs table ready");
+  });
 };
