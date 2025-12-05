@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import "./config/db.js";
-import { initializeDatabase } from "./config/initDB.js";
+import { initializeDatabase } from "./config/dbexe.js";
+import authRoutes from "./routes/authRoutes.js";
+
 
 const app = express();
 app.use(cors());
@@ -17,3 +19,4 @@ app.get("/", (req, res) => {
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.use("/api/auth", authRoutes);
