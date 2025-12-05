@@ -7,4 +7,11 @@ export const initializeDatabase = () => {
     if (err) console.log("Error creating users table:", err);
     else console.log("Users table ready");
   });
-}
+  const companiesTable = `
+    CREATE TABLE IF NOT EXISTS companies (id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(100),slug VARCHAR(100),logo VARCHAR(255),description TEXT);`;
+  db.query(companiesTable, (err) => {
+    if (err) console.log("Error creating companies table:", err);
+    else console.log("Companies table ready");
+  });
+  
+};
