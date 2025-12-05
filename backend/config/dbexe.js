@@ -20,5 +20,11 @@ export const initializeDatabase = () => {
     else console.log(" Experiences table ready");
   });
 
- 
+  const codingTable = `CREATE TABLE IF NOT EXISTS coding_questions (id INT AUTO_INCREMENT PRIMARY KEY,title VARCHAR(255),difficulty VARCHAR(20), link VARCHAR(255) );`;
+  db.query(codingTable, (err) => {
+    if (err) console.log("Error creating coding table:", err);
+    else console.log("Coding Questions table ready");
+  });
+
+
 };
