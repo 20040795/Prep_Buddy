@@ -1,7 +1,8 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
+// User & Auth Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -48,78 +49,34 @@ export default function App() {
     JSON.parse(localStorage.getItem("user")).role === "admin";
 
   return (
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
 
-        {isLogged && <Navbar />}
+      {isLogged && <Navbar />}
 
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-         
-          <Route 
-            path="/dashboard" 
-            element={isLogged ? <Dashboard /> : <Login />} 
-          />
-          <Route 
-            path="/companies" 
-            element={isLogged ? <Companies /> : <Login />} 
-          />
-          <Route 
-            path="/companies/:companySlug" 
-            element={isLogged ? <CompanyDetails /> : <Login />} 
-          />
-          <Route 
-            path="/coding" 
-            element={isLogged ? <CodingPractice /> : <Login />} 
-          />
-          <Route 
-            path="/forum" 
-            element={isLogged ? <Forum /> : <Login />} 
-          />
-          <Route 
-            path="/forum/ask" 
-            element={isLogged ? <AskQuestion /> : <Login />} 
-          />
-          <Route 
-            path="/forum/:id" 
-            element={isLogged ? <ForumDiscussion /> : <Login />} 
-          />
-          <Route 
-            path="/add-experience" 
-            element={isLogged ? <AddExperience /> : <Login />} 
-          />
-          <Route 
-            path="/profile" 
-            element={isLogged ? <Profile /> : <Login />} 
-          />
-          <Route 
-            path="/graduates" 
-            element={isLogged ? <GraduatePrograms /> : <Login />} 
-          />
+       
+        <Route path="/dashboard" element={isLogged ? <Dashboard /> : <Login />} />
+        <Route path="/companies" element={isLogged ? <Companies /> : <Login />} />
+        <Route path="/companies/:companySlug" element={isLogged ? <CompanyDetails /> : <Login />} />
+        <Route path="/coding" element={isLogged ? <CodingPractice /> : <Login />} />
+        <Route path="/forum" element={isLogged ? <Forum /> : <Login />} />
+        <Route path="/forum/ask" element={isLogged ? <AskQuestion /> : <Login />} />
+        <Route path="/forum/:id" element={isLogged ? <ForumDiscussion /> : <Login />} />
+        <Route path="/add-experience" element={isLogged ? <AddExperience /> : <Login />} />
+        <Route path="/profile" element={isLogged ? <Profile /> : <Login />} />
+        <Route path="/graduates" element={isLogged ? <GraduatePrograms /> : <Login />} />
 
-         
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route
-            path="/admin/dashboard"
-            element={isAdmin ? <AdminDashboard /> : <AdminLogin />}
-          />
-          <Route
-            path="/admin/users"
-            element={isAdmin ? <AdminUsers /> : <AdminLogin />}
-          />
-          <Route
-            path="/admin/questions"
-            element={isAdmin ? <AdminQuestions /> : <AdminLogin />}
-          />
-          <Route
-            path="/admin/experiences"
-            element={isAdmin ? <AdminExperiences /> : <AdminLogin />}
-          />
-        </Routes>
-      </ThemeProvider>
-    </BrowserRouter>
+        
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={isAdmin ? <AdminDashboard /> : <AdminLogin />} />
+        <Route path="/admin/users" element={isAdmin ? <AdminUsers /> : <AdminLogin />} />
+        <Route path="/admin/questions" element={isAdmin ? <AdminQuestions /> : <AdminLogin />} />
+        <Route path="/admin/experiences" element={isAdmin ? <AdminExperiences /> : <AdminLogin />} />
+      </Routes>
+    </ThemeProvider>
   );
 }
