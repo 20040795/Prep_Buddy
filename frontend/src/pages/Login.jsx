@@ -1,80 +1,115 @@
-import { Box, TextField, Button, Typography, Paper } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+} from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 
-const Background = styled(Box)(({ theme }) => ({
+const Wrapper = styled(Box)(({ theme }) => ({
   minHeight: "100vh",
+  backgroundColor: theme.palette.background.default,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   padding: theme.spacing(3),
-  backgroundColor: theme.palette.background.default,
 }));
 
-const LoginCard = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(5),
+const Card = styled(Paper)(({ theme }) => ({
   width: "100%",
   maxWidth: 420,
-  borderRadius: theme.shape.borderRadius * 2,
+  padding: theme.spacing(5),
   background: theme.palette.background.paper,
-  boxShadow: `0 8px 30px rgba(0,0,0,0.5)`,
+  boxShadow: "0 8px 35px rgba(0,0,0,0.4)",
+  textAlign: "center",
 }));
 
 export default function Login() {
+  const navigate = useNavigate();
   const theme = useTheme();
 
-  return (
-    <Background>
-      <LoginCard elevation={0}>
-        <Box display="flex" justifyContent="center" mb={2}>
-          <img
-            src="/dbs.png"
-            alt="DBS Logo"
-            style={{ width: 90, height: 90, borderRadius: "8px" }}
-          />
-        </Box>
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-        <Typography variant="h4" align="center" gutterBottom color="primary">
+  const handleLogin = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        navigate("/dashboard");
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.log("Login error:", error);
+    }
+  };
+
+  return (
+    <Wrapper>
+
+      <Card>
+        {/* DBS College Logo */}
+        <img
+          src="/dbs.png"
+          alt="DBS Logo"
+          style={{ width: 90, marginBottom: 20, borderRadius: 8 }}
+        />
+
+        <Typography variant="h4" color="primary" fontWeight={700} gutterBottom>
           Login
         </Typography>
 
         <TextField
+          fullWidth
           label="Email"
           type="email"
-          fullWidth
           margin="normal"
           variant="filled"
-          InputProps={{
-            style: { backgroundColor: theme.palette.background.paper, borderRadius: 4 }
-          }}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <TextField
+          fullWidth
           label="Password"
           type="password"
-          fullWidth
           margin="normal"
           variant="filled"
-          InputProps={{
-            style: { backgroundColor: theme.palette.background.paper, borderRadius: 4 }
-          }}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <Button
           fullWidth
           variant="contained"
-          size="large"
           color="primary"
-          sx={{
-            mt: 3,
-            py: 1.4,
-            fontWeight: 600,
-            borderRadius: 3,
-            textTransform: "none"
-          }}
+          sx={{ mt: 3, py: 1.3, fontWeight: 600 }}
+          onClick={handleLogin}
         >
           Login
         </Button>
-      </LoginCard>
-    </Background>
+
+        <Typography
+          sx={{ mt: 2, cursor: "pointer" }}
+          color="secondary"
+          onClick={() => navigate("/register")}
+        >
+          Don’t have an account? Register
+        </Typography>
+      </Card>
+
+    </Wrapper>
   );
 }
