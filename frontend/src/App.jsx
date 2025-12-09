@@ -21,6 +21,8 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminQuestions from "./pages/admin/AdminQuestions";
 import AdminExperiences from "./pages/admin/AdminExperiences";
+import AdminForum from "./pages/admin/AdminForum";
+
 
 import Navbar from "./components/Navbar";
 
@@ -76,6 +78,8 @@ export default function App() {
         <Route path="/admin/user" element={isAdmin ? <AdminUsers /> : <AdminLogin />} />
         <Route path="/admin/questions" element={isAdmin ? <AdminQuestions /> : <AdminLogin />} />
         <Route path="/admin/experiences" element={isAdmin ? <AdminExperiences /> : <AdminLogin />} />
+        <Route path="/admin/forum" element={isAdmin ? <AdminForum /> : <AdminLogin />}/>
+
       </Routes>
     </ThemeProvider>
   );
