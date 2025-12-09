@@ -4,8 +4,8 @@ export const initializeDatabase = () => {
   const usersTable = `
     CREATE TABLE IF NOT EXISTS user (id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(100),email VARCHAR(100) UNIQUE,password VARCHAR(255),role ENUM('student', 'admin') DEFAULT 'student',created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);`;
   db.query(usersTable, (err) => {
-    if (err) console.log("Error creating users table:", err);
-    else console.log("Users table ready");
+    if (err) console.log("Error creating user table:", err);
+    else console.log("User table ready");
   });
   const companiesTable = `
     CREATE TABLE IF NOT EXISTS companies (id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(100),slug VARCHAR(100),logo VARCHAR(255),description TEXT);`;
