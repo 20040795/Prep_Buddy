@@ -1,3 +1,5 @@
+import { Box, Typography, Card, CardContent, Button } from "@mui/material";
+
 export default function AdminExperiences() {
   const experiences = [
     {
@@ -24,42 +26,30 @@ export default function AdminExperiences() {
     alert("Experience deleted (placeholder): " + id);
   };
 
-  const cardStyle = {
-    padding: "16px",
-    marginBottom: "16px",
-    borderRadius: "8px",
-    border: "1px solid #ddd",
-    background: "#f9f9f9",
-  };
-
-  const deleteButtonStyle = {
-    marginTop: "12px",
-    padding: "8px 16px",
-    border: "none",
-    backgroundColor: "#d9534f",
-    color: "white",
-    borderRadius: "6px",
-    cursor: "pointer",
-  };
-
   return (
-    <div style={{ padding: "32px" }}>
-      <h2>Manage Interview Experiences</h2>
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Manage Interview Experiences
+      </Typography>
 
       {experiences.map((exp) => (
-        <div key={exp.id} style={cardStyle}>
-          <h3>{exp.company}</h3>
-          <p><strong>Role:</strong> {exp.role}</p>
-          <p><strong>Difficulty:</strong> {exp.difficulty}</p>
+        <Card key={exp.id} sx={{ p: 2, mb: 2 }}>
+          <CardContent>
+            <Typography variant="h6">{exp.company}</Typography>
+            <Typography>Role: {exp.role}</Typography>
+            <Typography>Difficulty: {exp.difficulty}</Typography>
 
-          <button
-            style={deleteButtonStyle}
-            onClick={() => handleDelete(exp.id)}
-          >
-            Delete Experience
-          </button>
-        </div>
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ mt: 2 }}
+              onClick={() => handleDelete(exp.id)}
+            >
+              Delete Experience
+            </Button>
+          </CardContent>
+        </Card>
       ))}
-    </div>
+    </Box>
   );
 }
