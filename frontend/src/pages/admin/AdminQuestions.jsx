@@ -1,13 +1,11 @@
 import { useState } from "react";
+import { Box, Typography, Card, CardContent, TextField, Button } from "@mui/material";
+
 export default function AdminQuestions() {
   const [questions, setQuestions] = useState([
     { id: 1, title: "Two Sum", difficulty: "Easy" },
     { id: 2, title: "Reverse Linked List", difficulty: "Easy" },
-    {
-      id: 3,
-      title: "Longest Substring Without Repeating Characters",
-      difficulty: "Medium",
-    },
+    { id: 3, title: "Longest Substring Without Repeating Characters", difficulty: "Medium" },
   ]);
 
   const [newTitle, setNewTitle] = useState("");
@@ -37,79 +35,61 @@ export default function AdminQuestions() {
     alert("Question deleted (placeholder): " + id);
   };
 
-  const cardStyle = {
-    padding: "16px",
-    marginBottom: "16px",
-    borderRadius: "8px",
-    border: "1px solid #ddd",
-    background: "#f9f9f9",
-  };
-
-  const inputStyle = {
-    width: "100%",
-    padding: "10px",
-    marginTop: "12px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-  };
-
-  const buttonStyle = {
-    marginTop: "12px",
-    padding: "10px 18px",
-    border: "none",
-    backgroundColor: "#007bff",
-    color: "white",
-    borderRadius: "6px",
-    cursor: "pointer",
-  };
-
-  const deleteButtonStyle = {
-    marginTop: "10px",
-    padding: "8px 16px",
-    border: "none",
-    backgroundColor: "#d9534f",
-    color: "white",
-    borderRadius: "6px",
-    cursor: "pointer",
-  };
-
   return (
-    <div style={{ padding: "32px" }}>
-      <h2>Manage Coding Questions</h2>
-      <div style={{ marginBottom: "32px" }}>
-        <h3>Add New Question</h3>
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Manage Coding Questions
+      </Typography>
 
-        <input
-          style={inputStyle}
-          placeholder="Question Title"
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h6">Add New Question</Typography>
+
+        <TextField
+          fullWidth
+          label="Question Title"
+          sx={{ mt: 2 }}
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
         />
 
-        <input
-          style={inputStyle}
-          placeholder="Difficulty (Easy / Medium / Hard)"
+        <TextField
+          fullWidth
+          label="Difficulty (Easy / Medium / Hard)"
+          sx={{ mt: 2 }}
           value={newDifficulty}
           onChange={(e) => setNewDifficulty(e.target.value)}
         />
 
-        <button style={buttonStyle} onClick={handleAddQuestion}>
+        <Button
+          variant="contained"
+          sx={{ mt: 2 }}
+          onClick={handleAddQuestion}
+        >
           Add Question
-        </button>
-      </div>
-      <h3>Existing Questions</h3>
-      {questions.map((q) => (
-        <div key={q.id} style={cardStyle}>
-          <h4>{q.title}</h4>
-          <p>
-            <strong>Difficulty:</strong> {q.difficulty}
-          </p>
+        </Button>
+      </Box>
 
-          <button style={deleteButtonStyle} onClick={() => handleDelete(q.id)}>
-            Delete
-          </button>
-        </div>
+      <Typography variant="h5" sx={{ mb: 2 }}>
+        Existing Questions
+      </Typography>
+
+      {questions.map((q) => (
+        <Card key={q.id} sx={{ p: 2, mb: 2 }}>
+          <CardContent>
+            <Typography variant="h6">{q.title}</Typography>
+            <Typography>Difficulty: {q.difficulty}</Typography>
+
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ mt: 1 }}
+              onClick={() => handleDelete(q.id)}
+            >
+              Delete
+            </Button>
+          </CardContent>
+        </Card>
       ))}
-    </div>
+    </Box>
   );
 }
