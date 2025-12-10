@@ -1,8 +1,8 @@
+import { Box, Typography, Button, Grid, Card, CardContent } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-
   const stats = [
     { label: "Total Users", value: 42 },
     { label: "Interview Experiences", value: 15 },
@@ -10,65 +10,59 @@ export default function AdminDashboard() {
     { label: "Forum Posts", value: 18 },
   ];
 
-  const cardStyle = {
-    width: "200px",
-    padding: "16px",
-    borderRadius: "8px",
-    border: "1px solid #ddd",
-    background: "#f8f8f8",
-    marginRight: "16px",
-    marginBottom: "16px",
-  };
-
-  const buttonStyle = {
-    padding: "10px 18px",
-    backgroundColor: "#007bff",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    marginRight: "12px",
-    marginBottom: "12px",
-  };
-
   return (
-    <div style={{ padding: "32px" }}>
-      <h2>Admin Dashboard</h2>
-
-      <div style={{ display: "flex", flexWrap: "wrap", marginBottom: "32px" }}>
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Admin Dashboard
+      </Typography>
+      <Grid container spacing={3} sx={{ mb: 4 }}>
         {stats.map((stat, index) => (
-          <div key={index} style={cardStyle}>
-            <h3>{stat.label}</h3>
-            <h2>{stat.value}</h2>
-          </div>
+          <Grid item key={index}>
+            <Card sx={{ width: 220, p: 2 }}>
+              <CardContent>
+                <Typography variant="h6">{stat.label}</Typography>
+                <Typography variant="h4">{stat.value}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
+      </Grid>
+      <Typography variant="h5" sx={{ mb: 2 }}>
+        Manage Portal
+      </Typography>
 
-      <h3>Manage Portal</h3>
-
-      <div>
-        <button style={buttonStyle} onClick={() => navigate("/admin/user")}>
+      <Box>
+        <Button
+          variant="contained"
+          sx={{ mr: 2 }}
+          onClick={() => navigate("/admin/user")}
+        >
           Manage Users
-        </button>
+        </Button>
 
-        <button
-          style={buttonStyle}
+        <Button
+          variant="contained"
+          sx={{ mr: 2 }}
           onClick={() => navigate("/admin/experiences")}
         >
           Manage Experiences
-        </button>
+        </Button>
 
-        <button
-          style={buttonStyle}
+        <Button
+          variant="contained"
+          sx={{ mr: 2 }}
           onClick={() => navigate("/admin/questions")}
         >
           Manage Coding Questions
-        </button>
+        </Button>
 
-        <button style={buttonStyle} onClick={() => navigate("/admin/forum")}>
+        <Button
+          variant="contained"
+          onClick={() => navigate("/admin/forum")}
+        >
           Manage Forum Posts
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Box>
+    </Box>
   );
 }
