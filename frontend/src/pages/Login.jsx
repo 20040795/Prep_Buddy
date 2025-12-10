@@ -60,7 +60,6 @@ export default function Login() {
     <Wrapper>
 
       <Card>
-        {/* DBS College Logo */}
         <img
           src="/dbs.png"
           alt="DBS Logo"
