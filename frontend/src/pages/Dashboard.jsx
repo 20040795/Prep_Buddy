@@ -1,12 +1,4 @@
-import {
-  Box,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  Avatar,
-  Button,
-} from "@mui/material";
+import {Box,Typography,Grid,Card,CardContent,Avatar,Button,} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -86,6 +78,7 @@ export default function Dashboard() {
               Start Coding Practice
             </Button>
           </Box>
+
           <motion.img
             src="\success.png"
             alt="Student Illustration"
@@ -96,6 +89,7 @@ export default function Dashboard() {
           />
         </Box>
       </motion.div>
+
       <Grid container spacing={3} sx={{ mb: 6 }}>
         {stats.map((s, index) => (
           <Grid item xs={12} sm={6} md={3} key={s.label}>
@@ -181,24 +175,9 @@ export default function Dashboard() {
 
       <Grid container spacing={3}>
         {[
-          {
-            title: "Add Experience",
-            desc: "Share your interview journey.",
-            color: "rgba(255,193,7,0.25)",
-            link: "/add-experience",
-          },
-          {
-            title: "Join Forum",
-            desc: "Ask and answer questions.",
-            color: "rgba(76,175,80,0.22)",
-            link: "/forum",
-          },
-          {
-            title: "Graduate Programs",
-            desc: "Explore new opportunities.",
-            color: "rgba(33,150,243,0.22)",
-            link: "/graduates",
-          },
+          { title: "Add Experience", desc: "Share your interview journey.", link: "/add-experience", color: "rgba(255,193,7,0.25)" },
+          { title: "Join Forum", desc: "Ask and answer questions.", link: "/forum", color: "rgba(76,175,80,0.22)" },
+          { title: "Graduate Programs", desc: "Explore new opportunities.", link: "/graduates", color: "rgba(33,150,243,0.22)" },
         ].map((card, i) => (
           <Grid item xs={12} sm={4} key={card.title}>
             <motion.div
