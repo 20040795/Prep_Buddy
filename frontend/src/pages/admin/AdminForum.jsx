@@ -1,3 +1,4 @@
+import { Box, Typography, Card, CardContent, Button } from "@mui/material";
 export default function AdminForum() {
   const posts = [
     {
@@ -21,41 +22,29 @@ export default function AdminForum() {
     alert("Forum post deleted (placeholder): " + id);
   };
 
-  const cardStyle = {
-    padding: "16px",
-    marginBottom: "16px",
-    borderRadius: "8px",
-    border: "1px solid #ddd",
-    background: "#f9f9f9",
-  };
-
-  const deleteButtonStyle = {
-    marginTop: "12px",
-    padding: "8px 16px",
-    border: "none",
-    backgroundColor: "#d9534f",
-    color: "white",
-    borderRadius: "6px",
-    cursor: "pointer",
-  };
-
   return (
-    <div style={{ padding: "32px" }}>
-      <h2>Manage Forum Posts</h2>
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Manage Forum Posts
+      </Typography>
 
       {posts.map((post) => (
-        <div key={post.id} style={cardStyle}>
-          <h3>{post.title}</h3>
-          <p><strong>Tags:</strong> {post.tags}</p>
+        <Card key={post.id} sx={{ p: 2, mb: 2 }}>
+          <CardContent>
+            <Typography variant="h6">{post.title}</Typography>
+            <Typography>Tags: {post.tags}</Typography>
 
-          <button
-            style={deleteButtonStyle}
-            onClick={() => handleDelete(post.id)}
-          >
-            Delete Post
-          </button>
-        </div>
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ mt: 2 }}
+              onClick={() => handleDelete(post.id)}
+            >
+              Delete Post
+            </Button>
+          </CardContent>
+        </Card>
       ))}
-    </div>
+    </Box>
   );
 }
