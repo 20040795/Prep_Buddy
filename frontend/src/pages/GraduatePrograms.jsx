@@ -1,3 +1,4 @@
+import { Box, Typography, Card, CardContent, Button, Grid } from "@mui/material";
 export default function GraduatePrograms() {
   const programs = [
     {
@@ -26,46 +27,36 @@ export default function GraduatePrograms() {
     },
   ];
 
-  const cardStyle = {
-    width: "320px",
-    padding: "16px",
-    borderRadius: "8px",
-    border: "1px solid #ddd",
-    background: "#f9f9f9",
-    marginBottom: "16px",
-    boxSizing: "border-box",
-  };
-
-  const buttonStyle = {
-    padding: "10px 18px",
-    backgroundColor: "#007bff",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-  };
-
-  const gridStyle = {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "16px",
-  };
-
   return (
-    <div style={{ padding: "32px" }}>
-      <h2 style={{ marginBottom: "24px" }}>Graduate Programs</h2>
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h4" sx={{ mb: 4 }}>
+        Graduate Programs
+      </Typography>
 
-      <div style={gridStyle}>
+      <Grid container spacing={3}>
         {programs.map((p) => (
-          <div key={p.id} style={cardStyle}>
-            <h3 style={{ fontWeight: "bold" }}>{p.company}</h3>
-            <p style={{ marginBottom: "16px" }}>{p.description}</p>
-            <button style={buttonStyle} onClick={() => window.open(p.link, "_blank")}>
-              Apply Now
-            </button>
-          </div>
+          <Grid item key={p.id}>
+            <Card sx={{ width: 320, p: 2 }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  {p.company}
+                </Typography>
+
+                <Typography sx={{ mb: 2 }}>
+                  {p.description}
+                </Typography>
+
+                <Button
+                  variant="contained"
+                  onClick={() => window.open(p.link, "_blank")}
+                >
+                  Apply Now
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Box>
   );
 }
