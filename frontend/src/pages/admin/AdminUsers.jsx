@@ -1,3 +1,5 @@
+import { Box, Typography, Card, CardContent, Button } from "@mui/material";
+
 export default function AdminUsers() {
   const users = [
     { id: 1, name: "John Doe", email: "john@gmail.com", role: "student" },
@@ -9,42 +11,30 @@ export default function AdminUsers() {
     alert("User deleted (placeholder): " + id);
   };
 
-  const cardStyle = {
-    padding: "16px",
-    marginBottom: "16px",
-    borderRadius: "8px",
-    border: "1px solid #ddd",
-    background: "#f8f8f8",
-  };
-
-  const deleteButtonStyle = {
-    marginTop: "12px",
-    padding: "8px 16px",
-    border: "none",
-    backgroundColor: "#d9534f",
-    color: "white",
-    borderRadius: "6px",
-    cursor: "pointer",
-  };
-
   return (
-    <div style={{ padding: "32px" }}>
-      <h2>Manage Users</h2>
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Manage Users
+      </Typography>
 
       {users.map((user) => (
-        <div key={user.id} style={cardStyle}>
-          <h3>{user.name}</h3>
-          <p>Email: {user.email}</p>
-          <p>Role: {user.role}</p>
+        <Card key={user.id} sx={{ p: 2, mb: 2 }}>
+          <CardContent>
+            <Typography variant="h6">{user.name}</Typography>
+            <Typography>Email: {user.email}</Typography>
+            <Typography>Role: {user.role}</Typography>
 
-          <button
-            style={deleteButtonStyle}
-            onClick={() => handleDelete(user.id)}
-          >
-            Delete User
-          </button>
-        </div>
+            <Button
+              variant="contained"
+              sx={{ mt: 2 }}
+              color="error"
+              onClick={() => handleDelete(user.id)}
+            >
+              Delete User
+            </Button>
+          </CardContent>
+        </Card>
       ))}
-    </div>
+    </Box>
   );
 }
