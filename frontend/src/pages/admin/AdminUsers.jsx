@@ -1,36 +1,47 @@
 import { Box, Typography, Card, CardContent, Button } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export default function AdminUsers() {
-  const users = [
-    { id: 1, name: "John Doe", email: "john@gmail.com", role: "student" },
-    { id: 2, name: "Sarah Smith", email: "sarah@gmail.com", role: "student" },
-    { id: 3, name: "Admin User", email: "admin@dbs.com", role: "admin" },
-  ];
+  const [users, setUsers] = useState([]);
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/admin/users", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => setUsers(data))
+      .catch(err => console.log("Error loading users:", err));
+  }, []);
 
   const handleDelete = (id) => {
-    alert("User deleted (placeholder): " + id);
+    fetch(`http://localhost:5000/api/admin/users/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(() => setUsers(users.filter(u => u.id !== id)))
+      .catch(err => console.log("Delete error:", err));
   };
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Manage Users
-      </Typography>
+      <Typography variant="h4">Manage Users</Typography>
 
       {users.map((user) => (
         <Card key={user.id} sx={{ p: 2, mb: 2 }}>
           <CardContent>
             <Typography variant="h6">{user.name}</Typography>
-            <Typography>Email: {user.email}</Typography>
+            <Typography>{user.email}</Typography>
             <Typography>Role: {user.role}</Typography>
 
             <Button
               variant="contained"
-              sx={{ mt: 2 }}
               color="error"
+              sx={{ mt: 2 }}
               onClick={() => handleDelete(user.id)}
             >
-              Delete User
+              Delete
             </Button>
           </CardContent>
         </Card>
