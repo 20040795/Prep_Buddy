@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
 export default function AskQuestion() {
   const navigate = useNavigate();
 
@@ -8,15 +9,35 @@ export default function AskQuestion() {
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
 
-  const handleSubmit = () => {
-    console.log({
-      title,
-      description,
-      tags
-    });
+  const token = localStorage.getItem("token");
 
-    alert("Question submitted (placeholder).");
-    navigate("/forum");
+  const handleSubmit = () => {
+    if (!title || !description) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    fetch("http://localhost:5000/api/forum", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, 
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        tags,
+      }),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        alert("Question submitted successfully!");
+        navigate("/forum");
+      })
+      .catch((err) => {
+        console.log("Error submitting question:", err);
+        alert("Error submitting question");
+      });
   };
 
   return (
