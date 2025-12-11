@@ -1,74 +1,68 @@
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Box, Typography, TextField, Button } from "@mui/material";
-import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 export default function ForumDiscussion() {
   const { id } = useParams();
-  const question = {
-    id,
-    title: "How to prepare for google interview?",
-    description: "I am confused about what topics to focus on. Please guide me.",
-    tags: "coding, preparation",
-  };
-  const [replies, setReplies] = useState([
-    { id: 1, text: "Practice arrays, strings, DP and SQL." },
-    { id: 2, text: "Focus on LeetCode easy + medium first." },
-  ]);
-
+  const [post, setPost] = useState(null);
+  const [replies, setReplies] = useState([]);
   const [newReply, setNewReply] = useState("");
 
-  const handleAddReply = () => {
-    if (newReply.trim() === "") return;
+  const token = localStorage.getItem("token");
 
-    const newReplyObj = {
-      id: replies.length + 1,
-      text: newReply,
-    };
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/forum/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPost(data.post);
+        setReplies(data.replies);
+      });
+  }, [id]);
 
-    setReplies([...replies, newReplyObj]);
-    setNewReply("");
+  const handleReply = () => {
+    fetch(`http://localhost:5000/api/forum/${id}/reply`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ reply: newReply }),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setReplies([...replies, { reply: newReply }]);
+        setNewReply("");
+      });
   };
+
+  if (!post) return <Typography>Loading...</Typography>;
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        {question.title}
+      <Typography variant="h4">{post.title}</Typography>
+      <Typography sx={{ mt: 1 }}>{post.description}</Typography>
+
+      <Typography variant="h5" sx={{ mt: 4 }}>
+        Replies
       </Typography>
 
-      <Typography variant="body1" sx={{ mb: 2 }}>
-        {question.description}
-      </Typography>
-
-      <Typography variant="body2" sx={{ mb: 4 }}>
-        Tags: {question.tags}
-      </Typography>
-
-      <Typography variant="h6">Replies:</Typography>
-
-      {replies.map((reply) => (
-        <Box key={reply.id} sx={{ mt: 2 }}>
-          <Typography>• {reply.text}</Typography>
+      {replies.map((r, i) => (
+        <Box key={i} sx={{ mt: 2, p: 2, border: "1px solid #bbb" }}>
+          <Typography>{r.reply}</Typography>
         </Box>
       ))}
 
-      <Box sx={{ mt: 4 }}>
-        <TextField
-          fullWidth
-          multiline
-          rows={3}
-          label="Add your reply"
-          value={newReply}
-          onChange={(e) => setNewReply(e.target.value)}
-        />
+      <TextField
+        fullWidth
+        sx={{ mt: 3 }}
+        label="Write a reply"
+        value={newReply}
+        onChange={(e) => setNewReply(e.target.value)}
+      />
 
-        <Button
-          variant="contained"
-          sx={{ mt: 2 }}
-          onClick={handleAddReply}
-        >
-          Submit Reply
-        </Button>
-      </Box>
+      <Button variant="contained" sx={{ mt: 2 }} onClick={handleReply}>
+        Add Reply
+      </Button>
     </Box>
   );
 }
