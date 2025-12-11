@@ -12,7 +12,6 @@ export default function Profile() {
     { id: 1, title: "How to prepare for DBS coding round?" },
     { id: 2, title: "What topics to study for Deloitte exam?" },
   ];
-
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h4" gutterBottom>
