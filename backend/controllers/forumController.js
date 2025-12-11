@@ -43,15 +43,15 @@ export const getPostDetails = (req, res) => {
 
 export const addReply = (req, res) => {
   const { id } = req.params;
-  const { reply_text } = req.body;
+  const { reply } = req.body;   
   const user_id = req.user.id;
 
   const query = `
-    INSERT INTO forum_replies (post_id, user_id, reply_text)
+    INSERT INTO forum_replies (post_id, user_id, reply)
     VALUES (?, ?, ?)
   `;
 
-  db.query(query, [id, user_id, reply_text], (err) => {
+  db.query(query, [id, user_id, reply], (err) => {
     if (err) return res.status(500).json({ message: "Insert error" });
     res.json({ message: "Reply added" });
   });
