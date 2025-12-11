@@ -8,6 +8,7 @@ import { initializeDatabase } from "./config/dbexe.js";
 import authRoutes from "./routes/authRoutes.js";
 import companyRoutes from "./routes/companies.routes.js";
 import experienceRoutes from "./routes/experiences.routes.js";
+import codingRoutes from "./routes/coding.routes.js";
 
 const app = express();
 
@@ -25,4 +26,5 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 app.use("/api/companies", companyRoutes);
 app.use("/api/experiences", experienceRoutes);
+app.use("/api/coding", codingRoutes);
 
