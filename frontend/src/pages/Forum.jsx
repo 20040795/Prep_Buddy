@@ -1,37 +1,43 @@
+import { useEffect, useState } from "react";
+import { Box, Typography, Card, CardContent, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export default function Forum() {
   const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
 
-  const posts = [
-    { id: 1, title: "How to prepare  for the google interview", tags: "coding" },
-    { id: 2, title: "What questions are asked in Deloitte tech round?", tags: "HR" },
-    { id: 3, title: "Tips for Amazon OA?", tags: "Amazon, OA" },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:5000/api/forum")
+      .then((res) => res.json())
+      .then((data) => setPosts(data))
+      .catch((err) => console.log("Forum load error:", err));
+  }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Student Forum</h2>
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h4">Forum</Typography>
 
-      <button onClick={() => navigate("/forum/ask")}>
+      <Button
+        variant="contained"
+        sx={{ mt: 2 }}
+        onClick={() => navigate("/forum/ask")}
+      >
         Ask a Question
-      </button>
+      </Button>
 
       {posts.map((post) => (
-        <div
+        <Card
           key={post.id}
-          style={{
-            border: "1px solid #ccc",
-            padding: "10px",
-            marginTop: "10px",
-            cursor: "pointer"
-          }}
+          sx={{ p: 2, mt: 3, cursor: "pointer" }}
           onClick={() => navigate(`/forum/${post.id}`)}
         >
-          <h3>{post.title}</h3>
-          <p>Tags: {post.tags}</p>
-        </div>
+          <CardContent>
+            <Typography variant="h6">{post.title}</Typography>
+            <Typography>{post.description}</Typography>
+            <Typography sx={{ mt: 1 }}>Tags: {post.tags}</Typography>
+          </CardContent>
+        </Card>
       ))}
-    </div>
+    </Box>
   );
 }
