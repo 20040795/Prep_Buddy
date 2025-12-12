@@ -12,8 +12,9 @@ import companyRoutes from "./routes/companies.routes.js";
 import experienceRoutes from "./routes/experiences.routes.js";
 import codingRoutes from "./routes/coding.routes.js";
 import forumRoutes from "./routes/forum.routes.js";
-import graduateRoutes from "./routes/graduate.routes.js";
+import graduateRoutes from "./routes/graduates.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api/coding", codingRoutes);
 app.use("/api/forum", forumRoutes);
 app.use("/api/graduates", graduateRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/user", userRoutes);
 
 //server starts
 const PORT = process.env.PORT || 5000;
