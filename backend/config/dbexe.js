@@ -38,7 +38,7 @@ export const initializeDatabase = () => {
     if (err) console.log(" Error creating graduate programs table:", err);
     else console.log(" Graduate Programs table ready");
   });
-  const repliesTable = `create table if not exists forum_replies (id INT AUTO_INCREMENT PRIMARY KEY,post_id INT,user_id INT, reply_text TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  const repliesTable = `create table if not exists forum_replies (id INT AUTO_INCREMENT PRIMARY KEY,post_id INT,user_id INT, reply TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
 `;
 
