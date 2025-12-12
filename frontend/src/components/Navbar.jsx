@@ -1,7 +1,12 @@
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
+
 export default function Navbar() {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+
+  //Hide navbar completely for admin users
+  if (user.role === "admin") return null;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -21,8 +26,11 @@ export default function Navbar() {
         <Button color="inherit" component={Link} to="/coding">Coding</Button>
         <Button color="inherit" component={Link} to="/forum">Forum</Button>
         <Button color="inherit" component={Link} to="/graduates">Graduates</Button>
-        <Button color="inherit" component={Link} to="/profile">Profile</Button>
 
+        {/*profile is only for students */}
+        {user.role !== "admin" && (
+          <Button color="inherit" component={Link} to="/profile">Profile</Button>
+        )}
 
         <Button 
           variant="outlined" 

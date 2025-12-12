@@ -1,15 +1,33 @@
 import { Box, Typography, Grid, Button } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StatsCard from "../../components/StatsCard";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
-  const stats = [
-    { title: "Total Users", value: 42 },
-    { title: "Experiences", value: 15 },
-    { title: "Coding Questions", value: 20 },
-    { title: "Forum Posts", value: 18 }
+  const [stats, setStats] = useState({
+    users: 0,
+    experiences: 0,
+    coding: 0,
+    forum: 0
+  });
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/admin/stats", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => setStats(data))
+      .catch(err => console.log(err));
+  }, []);
+
+  const rows = [
+    { title: "Total Users", value: stats.users },
+    { title: "Experiences", value: stats.experiences },
+    { title: "Coding Questions", value: stats.coding },
+    { title: "Forum Posts", value: stats.forum }
   ];
 
   return (
@@ -19,7 +37,7 @@ export default function AdminDashboard() {
       </Typography>
 
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        {stats.map((s, i) => (
+        {rows.map((s, i) => (
           <Grid item key={i}>
             <StatsCard title={s.title} value={s.value} />
           </Grid>
@@ -30,19 +48,34 @@ export default function AdminDashboard() {
         Manage Portal
       </Typography>
 
-      <Button variant="contained" sx={{ mr: 2 }} onClick={() => navigate("/admin/user")}>
+      <Button
+        variant="contained"
+        sx={{ mr: 2 }}
+        onClick={() => navigate("/admin/users")}
+      >
         Manage Users
       </Button>
 
-      <Button variant="contained" sx={{ mr: 2 }} onClick={() => navigate("/admin/experiences")}>
+      <Button
+        variant="contained"
+        sx={{ mr: 2 }}
+        onClick={() => navigate("/admin/experiences")}
+      >
         Manage Experiences
       </Button>
 
-      <Button variant="contained" sx={{ mr: 2 }} onClick={() => navigate("/admin/questions")}>
+      <Button
+        variant="contained"
+        sx={{ mr: 2 }}
+        onClick={() => navigate("/admin/questions")}
+      >
         Manage Coding Questions
       </Button>
 
-      <Button variant="contained" onClick={() => navigate("/admin/forum")}>
+      <Button
+        variant="contained"
+        onClick={() => navigate("/admin/forum")}
+      >
         Manage Forum Posts
       </Button>
     </Box>
