@@ -46,5 +46,10 @@ db.query(repliesTable, (err) => {
   if (err) console.log("Error creating replies table:", err);
   else console.log("Replies table ready");
 });
+const leaderboard = `
+  create table if not exists leaderboard (user_id INT PRIMARY KEY,problems_solved INT DEFAULT 0,experiences INT DEFAULT 0,forum_answers INT DEFAULT 0,score INT DEFAULT 0
+  );
+`;
+db.query(leaderboard);
 
 };
