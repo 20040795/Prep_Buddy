@@ -16,6 +16,9 @@ import ForumDiscussion from "./pages/ForumDiscussion";
 import AddExperience from "./pages/AddExperience";
 import Profile from "./pages/Profile";
 import GraduatePrograms from "./pages/GraduatePrograms";
+import Leaderboard from "./pages/Leaderboard";
+import GraduateAPI from "./pages/GraduateAPI";
+
 
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -100,6 +103,9 @@ export default function App() {
           path="/admin/forum"
           element={isAdmin ? <AdminForum /> : <Navigate to="/admin" />}
         />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/live-graduates" element={<GraduateAPI />} />
+
       </Routes>
     </ThemeProvider>
   );
