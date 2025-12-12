@@ -1,13 +1,8 @@
-import {
-  Box,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Grid, Card, CardContent, Button } from "@mui/material";
 
 export default function CodingPractice() {
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+
   const categories = [
     { name: "Arrays", link: "https://leetcode.com/tag/array/" },
     { name: "Strings", link: "https://leetcode.com/tag/string/" },
@@ -16,16 +11,17 @@ export default function CodingPractice() {
     { name: "Aptitude", link: "https://www.indiabix.com/aptitude/questions-and-answers/" },
   ];
 
-  const topQuestions = [
-    "Reverse a Linked List",
-    "Find second largest element in array",
-    "Check if a string is palindrome",
-    "Merge two sorted arrays",
-    "Find missing number in array",
-    "Reverse words in a string",
-    "Longest common prefix",
-    "Two-sum problem",
-  ];
+  const handlePracticeClick = (topicLink) => {
+    // ⭐ Update leaderboard
+    fetch("http://localhost:5000/api/leaderboard/solved", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id: user.id })
+    });
+
+    // Open practice link
+    window.open(topicLink, "_blank");
+  };
 
   return (
     <Box sx={{ p: 4 }}>
@@ -45,10 +41,11 @@ export default function CodingPractice() {
                 <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
                   {cat.name}
                 </Typography>
+
                 <Button
                   variant="contained"
                   sx={{ bgcolor: "#003366" }}
-                  onClick={() => window.open(cat.link, "_blank")}
+                  onClick={() => handlePracticeClick(cat.link)}
                 >
                   Practice
                 </Button>
@@ -56,54 +53,6 @@ export default function CodingPractice() {
             </Card>
           </Grid>
         ))}
-      </Grid>
-
-      <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "#003366" }}>
-        💡 Most Asked Coding Questions in DBS Interviews
-      </Typography>
-
-      <Box sx={{ ml: 2 }}>
-        {topQuestions.map((q, i) => (
-          <Typography key={i} sx={{ mb: 1 }}>
-            • {q}
-          </Typography>
-        ))}
-      </Box>
-
-      <Typography variant="h5" sx={{ mt: 5, mb: 2, fontWeight: "bold", color: "#003366" }}>
-        External Coding Practice Resources
-      </Typography>
-
-      <Grid container spacing={3}>
-        <Grid item>
-          <Button
-            variant="contained"
-            sx={{ bgcolor: "#ffa116", ":hover": { bgcolor: "#e68a00" }, width: 200, height: 50 }}
-            onClick={() => window.open("https://leetcode.com", "_blank")}
-          >
-            LeetCode
-          </Button>
-        </Grid>
-
-        <Grid item>
-          <Button
-            variant="contained"
-            sx={{ bgcolor: "#2ec866", ":hover": { bgcolor: "#1da754" }, width: 200, height: 50 }}
-            onClick={() => window.open("https://www.hackerrank.com", "_blank")}
-          >
-            HackerRank
-          </Button>
-        </Grid>
-
-        <Grid item>
-          <Button
-            variant="contained"
-            sx={{ bgcolor: "#0b6ab0", ":hover": { bgcolor: "#084f7a" }, width: 200, height: 50 }}
-            onClick={() => window.open("https://www.geeksforgeeks.org", "_blank")}
-          >
-            GeeksForGeeks
-          </Button>
-        </Grid>
       </Grid>
     </Box>
   );
