@@ -32,3 +32,32 @@ export const getCompanyExperiences = (req, res) => {
     res.json(result);
   });
 };
+// GET ALL EXPERIENCES (ADMIN ONLY)
+export const getAllExperiences = (req, res) => {
+  const query = `
+    SELECT experiences.*, user.name AS user_name, companies.name AS company_name
+    FROM experiences
+    JOIN user ON user.id = experiences.user_id
+    JOIN companies ON companies.id = experiences.company_id
+    ORDER BY experiences.created_at DESC
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ message: "Error loading experiences" });
+    res.json(results);
+  });
+};
+
+// DELETE EXPERIENCE (ADMIN ONLY)
+export const deleteExperience = (req, res) => {
+  const { id } = req.params;
+
+  const query = "DELETE FROM experiences WHERE id = ?";
+
+  db.query(query, [id], (err) => {
+    if (err) return res.status(500).json({ message: "Error deleting experience" });
+
+    res.json({ message: "Experience deleted successfully" });
+  });
+};
+
