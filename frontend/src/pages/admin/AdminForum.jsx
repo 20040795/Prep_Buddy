@@ -1,46 +1,42 @@
+import { useEffect, useState } from "react";
 import { Box, Typography, Card, CardContent, Button } from "@mui/material";
+
 export default function AdminForum() {
-  const posts = [
-    {
-      id: 1,
-      title: "How to prepare for google coding round?",
-      tags: "coding, interview",
-    },
-    {
-      id: 2,
-      title: "What topics are asked in Deloitte test?",
-      tags: "aptitude, Deloitte",
-    },
-    {
-      id: 3,
-      title: "Amazon OA tips",
-      tags: "amazon, online assessment",
-    },
-  ];
+  const [posts, setPosts] = useState([]);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/forum")
+      .then(res => res.json())
+      .then(data => setPosts(data));
+  }, []);
 
   const handleDelete = (id) => {
-    alert("Forum post deleted (placeholder): " + id);
+    fetch(`http://localhost:5000/api/forum/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    }).then(() => {
+      setPosts(posts.filter((p) => p.id !== id));
+    });
   };
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Manage Forum Posts
-      </Typography>
+      <Typography variant="h4">Manage Forum Posts</Typography>
 
-      {posts.map((post) => (
-        <Card key={post.id} sx={{ p: 2, mb: 2 }}>
+      {posts.map((p) => (
+        <Card key={p.id} sx={{ mt: 3, p: 2 }}>
           <CardContent>
-            <Typography variant="h6">{post.title}</Typography>
-            <Typography>Tags: {post.tags}</Typography>
+            <Typography variant="h6">{p.title}</Typography>
+            <Typography>{p.description}</Typography>
 
             <Button
               variant="contained"
-              color="error"
               sx={{ mt: 2 }}
-              onClick={() => handleDelete(post.id)}
+              color="error"
+              onClick={() => handleDelete(p.id)}
             >
-              Delete Post
+              Delete
             </Button>
           </CardContent>
         </Card>
