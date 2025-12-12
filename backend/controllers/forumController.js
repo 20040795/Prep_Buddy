@@ -1,7 +1,7 @@
 import db from "../config/db.js";
 
 export const getPosts = (req, res) => {
-  db.query("SELECT * FROM forum_posts", (err, result) => {
+  db.query("select * from forum_posts", (err, result) => {
     if (err) return res.status(500).json({ message: "DB error" });
     res.json(result);
   });
@@ -12,7 +12,7 @@ export const addPost = (req, res) => {
   const user_id = req.user.id;
 
   const query = `
-    INSERT INTO forum_posts (user_id, title, description, tags)
+    insert into forum_posts (user_id, title, description, tags)
     VALUES (?, ?, ?, ?)
   `;
   db.query(query, [user_id, title, description, tags], (err) => {
@@ -24,8 +24,8 @@ export const addPost = (req, res) => {
 export const getPostDetails = (req, res) => {
   const { id } = req.params;
 
-  const postQuery = `SELECT * FROM forum_posts WHERE id = ?`;
-  const repliesQuery = `SELECT * FROM forum_replies WHERE post_id = ?`;
+  const postQuery = `select * from forum_posts WHERE id = ?`;
+  const repliesQuery = `select * from forum_replies WHERE post_id = ?`;
 
   db.query(postQuery, [id], (err, postResult) => {
     if (err) return res.status(500).json({ message: "DB error" });
@@ -47,12 +47,25 @@ export const addReply = (req, res) => {
   const user_id = req.user.id;
 
   const query = `
-    INSERT INTO forum_replies (post_id, user_id, reply)
+    insert into forum_replies (post_id, user_id, reply)
     VALUES (?, ?, ?)
   `;
 
   db.query(query, [id, user_id, reply], (err) => {
     if (err) return res.status(500).json({ message: "Insert error" });
     res.json({ message: "Reply added" });
+  });
+};
+
+export const deletePost = (req, res) => {
+  const { id } = req.params;
+
+  const query = "delete from forum_posts WHERE id = ?";
+
+  db.query(query, [id], (err) => {
+    if (err) return res.status(500).json({ message: "Error deleting post" });
+    db.query("delete from forum_replies WHERE post_id = ?", [id]);
+
+    res.json({ message: "Post deleted successfully" });
   });
 };
