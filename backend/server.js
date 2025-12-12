@@ -15,7 +15,8 @@ import forumRoutes from "./routes/forum.routes.js";
 import graduateRoutes from "./routes/graduates.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import userRoutes from "./routes/user.routes.js";
-
+import leaderboardRoutes from "./routes/leaderboard.routes.js";
+import graduateAPIRoutes from "./routes/graduateapi.routes.js";
 const app = express();
 
 //middleware
@@ -39,7 +40,12 @@ app.use("/api/forum", forumRoutes);
 app.use("/api/graduates", graduateRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
+app.use("/api/graduateapi", graduateAPIRoutes);
 
 //server starts
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+

@@ -50,6 +50,18 @@ const leaderboard = `
   create table if not exists leaderboard (user_id INT PRIMARY KEY,problems_solved INT DEFAULT 0,experiences INT DEFAULT 0,forum_answers INT DEFAULT 0,score INT DEFAULT 0
   );
 `;
-db.query(leaderboard);
+db.query(leaderboard, (err) => {
+  if (err) console.log("Error creating leaderboard:", err);
+  else console.log("Leaderboard table ready");
+});
+const graduateJobs = `
+  CREATE TABLE IF NOT EXISTS graduate_jobs (id INT AUTO_INCREMENT PRIMARY KEY,title VARCHAR(255),company VARCHAR(255),location VARCHAR(255),apply_link VARCHAR(255),created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+`;
+db.query(graduateJobs, (err) => {
+  if (err) console.log("Error creating graduate jobs cache:", err);
+  else console.log("Graduate jobs table ready");
+});
+
 
 };
