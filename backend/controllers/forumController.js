@@ -24,11 +24,14 @@ export const addPost = (req, res) => {
 export const getPostDetails = (req, res) => {
   const { id } = req.params;
 
-  const postQuery = `select * from forum_posts WHERE id = ?`;
-  const repliesQuery = `select * from forum_replies WHERE post_id = ?`;
+  const postQuery = `SELECT * FROM forum_posts WHERE id = ?`;
+  const repliesQuery = `SELECT * FROM forum_replies WHERE post_id = ?`;
 
   db.query(postQuery, [id], (err, postResult) => {
     if (err) return res.status(500).json({ message: "DB error" });
+
+    if (postResult.length === 0)
+      return res.status(404).json({ message: "Post not found" });
 
     db.query(repliesQuery, [id], (err2, repliesResult) => {
       if (err2) return res.status(500).json({ message: "DB error" });
@@ -40,6 +43,7 @@ export const getPostDetails = (req, res) => {
     });
   });
 };
+
 
 export const addReply = (req, res) => {
   const { id } = req.params;
