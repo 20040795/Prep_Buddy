@@ -1,43 +1,40 @@
+import { useEffect, useState } from "react";
 import { Box, Typography, Card, CardContent, Button } from "@mui/material";
 
 export default function AdminExperiences() {
-  const experiences = [
-    {
-      id: 1,
-      company: "Google",
-      role: "Software Engineer Intern",
-      difficulty: "Medium",
-    },
-    {
-      id: 2,
-      company: "Amazon",
-      role: "SDE Intern",
-      difficulty: "Hard",
-    },
-    {
-      id: 3,
-      company: "Deloitte",
-      role: "Analyst",
-      difficulty: "Easy",
-    },
-  ];
+  const [experiences, setExperiences] = useState([]);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/experiences/all", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => setExperiences(data));
+  }, []);
 
   const handleDelete = (id) => {
-    alert("Experience deleted (placeholder): " + id);
+    fetch(`http://localhost:5000/api/experiences/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(() => {
+        setExperiences(experiences.filter((exp) => exp.id !== id));
+      });
   };
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Manage Interview Experiences
-      </Typography>
+      <Typography variant="h4">Manage Experiences</Typography>
 
       {experiences.map((exp) => (
-        <Card key={exp.id} sx={{ p: 2, mb: 2 }}>
+        <Card key={exp.id} sx={{ p: 2, mt: 3 }}>
           <CardContent>
-            <Typography variant="h6">{exp.company}</Typography>
-            <Typography>Role: {exp.role}</Typography>
-            <Typography>Difficulty: {exp.difficulty}</Typography>
+            <Typography variant="h6">
+              {exp.company_name} — {exp.job_role}
+            </Typography>
+            <Typography>User: {exp.user_name}</Typography>
+            <Typography sx={{ mt: 1 }}>{exp.experience_text}</Typography>
 
             <Button
               variant="contained"
@@ -45,7 +42,7 @@ export default function AdminExperiences() {
               sx={{ mt: 2 }}
               onClick={() => handleDelete(exp.id)}
             >
-              Delete Experience
+              Delete
             </Button>
           </CardContent>
         </Card>
