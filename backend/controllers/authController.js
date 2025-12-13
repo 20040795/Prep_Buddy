@@ -69,8 +69,6 @@ export const login = (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
-
-    // Create JWT token
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
@@ -89,10 +87,6 @@ export const login = (req, res) => {
     });
   });
 };
-
-/* ============================
-    GET ALL USERS (LEADERBOARD)
-============================ */
 export const getAllUsers = (req, res) => {
   const sql = "SELECT id, name, email, role FROM user";
 
