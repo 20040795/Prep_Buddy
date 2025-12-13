@@ -6,7 +6,7 @@ dotenv.config();
 import "./config/db.js";
 import { initializeDatabase } from "./config/dbexe.js";
 
-//routes
+// Routes
 import authRoutes from "./routes/authRoutes.js";
 import companyRoutes from "./routes/companies.routes.js";
 import experienceRoutes from "./routes/experiences.routes.js";
@@ -17,21 +17,24 @@ import adminRoutes from "./routes/admin.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import leaderboardRoutes from "./routes/leaderboard.routes.js";
 import graduateAPIRoutes from "./routes/graduateapi.routes.js";
+import logoRoutes from "./routes/logo.routes.js";
+import statsRoutes from "./routes/stats.routes.js";
+
 const app = express();
 
-//middleware
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-//this creates table
+// Initialize DB (creates tables)
 initializeDatabase();
 
-//index route
+// Test Route
 app.get("/", (req, res) => {
   res.send("Backend Running Successfully");
 });
 
-//api routes
+// API ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/experiences", experienceRoutes);
@@ -42,10 +45,9 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/graduateapi", graduateAPIRoutes);
+app.use("/api/stats", statsRoutes);
+app.use("/api/logo", logoRoutes);
 
-//server starts
+// START SERVER
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
-
