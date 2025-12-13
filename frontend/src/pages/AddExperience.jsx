@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, TextField, Button, MenuItem } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export default function AddExperience() {
@@ -7,6 +17,9 @@ export default function AddExperience() {
   const token = localStorage.getItem("token");
 
   const [companies, setCompanies] = useState([]);
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+
+  const [newCompanyName, setNewCompanyName] = useState("");
 
   const [formData, setFormData] = useState({
     company_id: "",
@@ -16,6 +29,7 @@ export default function AddExperience() {
     questions: "",
   });
 
+  // Load existing companies
   useEffect(() => {
     fetch("http://localhost:5000/api/companies")
       .then((res) => res.json())
@@ -24,6 +38,38 @@ export default function AddExperience() {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // ADD NEW COMPANY
+  const handleAddCompany = () => {
+    fetch("http://localhost:5000/api/companies/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: newCompanyName })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        alert("Company added!");
+
+        // Refresh companies
+        fetch("http://localhost:5000/api/companies")
+          .then((res) => res.json())
+          .then((list) => {
+            setCompanies(list);
+
+            // Auto-select the newly added company
+            setFormData((prev) => ({
+              ...prev,
+              company_id: data.id
+            }));
+
+            setOpenAddDialog(false);
+            setNewCompanyName("");
+          });
+      })
+      .catch(() => alert("Error adding company"));
   };
 
   const handleSubmit = () => {
@@ -38,7 +84,9 @@ export default function AddExperience() {
       .then((res) => res.json())
       .then(() => {
         alert("Experience added successfully!");
-        navigate(`/companies/${companies.find(c => c.id == formData.company_id).slug}`);
+        navigate(
+          `/companies/${companies.find((c) => c.id == formData.company_id)?.slug}`
+        );
       })
       .catch((err) => console.log("Error:", err));
   };
@@ -47,6 +95,7 @@ export default function AddExperience() {
     <Box sx={{ p: 4 }}>
       <Typography variant="h4">Add Interview Experience</Typography>
 
+      {/* Company dropdown */}
       <TextField
         select
         label="Select Company"
@@ -61,8 +110,18 @@ export default function AddExperience() {
             {c.name}
           </MenuItem>
         ))}
+
+        {/* ADD NEW COMPANY OPTION */}
+        <MenuItem
+          value="add_new"
+          sx={{ color: "blue", fontWeight: "bold" }}
+          onClick={() => setOpenAddDialog(true)}
+        >
+          ➕ Add New Company
+        </MenuItem>
       </TextField>
 
+      {/* OTHER FORM FIELDS */}
       <TextField
         fullWidth
         label="Job Role"
@@ -112,10 +171,34 @@ export default function AddExperience() {
         variant="contained"
         sx={{ mt: 3 }}
         onClick={handleSubmit}
-        disabled={!formData.company_id}
+        disabled={!formData.company_id || formData.company_id === "add_new"}
       >
         Submit Experience
       </Button>
+
+      {/* ADD COMPANY POPUP */}
+      <Dialog open={openAddDialog} onClose={() => setOpenAddDialog(false)}>
+        <DialogTitle>Add New Company</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            label="Company Name"
+            value={newCompanyName}
+            onChange={(e) => setNewCompanyName(e.target.value)}
+            sx={{ mt: 1 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenAddDialog(false)}>Cancel</Button>
+          <Button
+            onClick={handleAddCompany}
+            variant="contained"
+            disabled={!newCompanyName}
+          >
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
