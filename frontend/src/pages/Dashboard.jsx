@@ -15,7 +15,6 @@ import CodeIcon from "@mui/icons-material/Code";
 import ForumIcon from "@mui/icons-material/Forum";
 import WorkIcon from "@mui/icons-material/Work";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -32,17 +31,21 @@ export default function Dashboard() {
           problems: data.coding?.[0]?.count || 0,
           experiences: data.experiences?.[0]?.count || 0,
           forum: data.forum_posts?.[0]?.count || 0,
-          companies: data.companies?.[0]?.count || 0
+          companies: data.companies?.[0]?.count || 0,
         });
 
+        // FETCH USERS FOR LEADERBOARD
         if (data.leaderboard) {
           fetch("http://localhost:5000/api/auth/all-users")
             .then((res) => res.json())
-            .then((users) => {
+            .then((result) => {
+              const userList = result.users || result; // supports both formats
+
               const merged = data.leaderboard.map((u) => ({
                 ...u,
-                name: users.find((x) => x.id === u.user_id)?.name || "User"
+                name: userList.find((x) => x.id == u.user_id)?.name || "Unknown"
               }));
+
               setTopUsers(merged);
             });
         }
@@ -51,10 +54,10 @@ export default function Dashboard() {
   }, []);
 
   const statCards = [
-    { label: "Problems Solved", value: stats?.problems || 0, icon: <CodeIcon />, color: "#FFB300" }, // amber
-    { label: "Experiences Added", value: stats?.experiences || 0, icon: <WorkIcon />, color: "#29B6F6" }, // light blue
-    { label: "Forum Questions", value: stats?.forum || 0, icon: <ForumIcon />, color: "#66BB6A" }, // green
-    { label: "Companies", value: stats?.companies || 0, icon: <TrendingUpIcon />, color: "#AB47BC" }, // purple
+    { label: "Problems Solved", value: stats?.problems || 0, icon: <CodeIcon />, color: "#FFB300" },
+    { label: "Experiences Added", value: stats?.experiences || 0, icon: <WorkIcon />, color: "#29B6F6" },
+    { label: "Forum Questions", value: stats?.forum || 0, icon: <ForumIcon />, color: "#66BB6A" },
+    { label: "Companies", value: stats?.companies || 0, icon: <TrendingUpIcon />, color: "#AB47BC" },
   ];
 
   const companies = [
@@ -70,26 +73,26 @@ export default function Dashboard() {
       title: "Add Experience",
       desc: "Share your interview journey.",
       link: "/add-experience",
-      color: "#FFF59D" // yellow lighten
+      color: "#FFF59D"
     },
     {
       title: "Join Forum",
       desc: "Ask questions & connect with peers.",
       link: "/forum",
-      color: "#A5D6A7" // green lighten
+      color: "#A5D6A7"
     },
     {
       title: "Graduate Programs",
       desc: "Explore fresh graduate opportunities.",
       link: "/graduates",
-      color: "#81D4FA" // blue lighten
+      color: "#81D4FA"
     }
   ];
 
   return (
-    <Box sx={{ p: 4, minHeight: "100vh", backgroundColor: "#fdfdfd" }}>
+    <Box sx={{ p: 4, minHeight: "100vh", backgroundColor: "#f7f9fc" }}>
 
-      {/* HEADER */}
+      {/* ================= HEADER ================= */}
       <motion.div initial={{ opacity: 0, y: -40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
         <Box
           sx={{
@@ -114,7 +117,14 @@ export default function Dashboard() {
 
             <Button
               variant="contained"
-              sx={{ px: 4, py: 1.5, borderRadius: 3, backgroundColor: "#1976D2", color: "#fff", "&:hover": { backgroundColor: "#1565C0" } }}
+              sx={{
+                px: 4,
+                py: 1.5,
+                borderRadius: 3,
+                backgroundColor: "#1976D2",
+                color: "#fff",
+                "&:hover": { backgroundColor: "#1565C0" }
+              }}
               onClick={() => navigate("/coding")}
             >
               Start Coding Practice
@@ -125,10 +135,10 @@ export default function Dashboard() {
         </Box>
       </motion.div>
 
-      {/* STATS CARDS */}
+      {/* ================= STATS CARDS ================= */}
       <Grid container spacing={3} sx={{ mb: 6 }}>
         {statCards.map((s, index) => (
-          <Grid item xs={12} sm={6} md={3} key={s.label}>
+<Grid key={s.label} size={{ xs: 12, sm: 6, md: 3 }}>
             <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }}>
               <Card sx={{ p: 3, borderRadius: 3, boxShadow: "0 6px 20px rgba(0,0,0,0.05)", backgroundColor: "#fff" }}>
                 <CardContent sx={{ textAlign: "center" }}>
@@ -147,7 +157,7 @@ export default function Dashboard() {
         ))}
       </Grid>
 
-      {/* TOP USERS */}
+      {/* ================= TOP USERS (LEADERBOARD) ================= */}
       <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "#1976D2" }}>
         Top Performers 🎖️
       </Typography>
@@ -158,7 +168,7 @@ export default function Dashboard() {
         )}
 
         {topUsers.map((u, index) => (
-          <Grid item xs={12} sm={4} key={u.user_id}>
+<Grid key={u.user_id} size={{ xs: 12, sm: 4 }}>
             <Card sx={{ p: 2, borderRadius: 3, background: "#E3F2FD", boxShadow: "0 4px 16px rgba(0,0,0,0.05)" }}>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: "bold", color: "#0D47A1" }}>
@@ -172,42 +182,77 @@ export default function Dashboard() {
         ))}
       </Grid>
 
-      {/* COMPANIES */}
+      {/* ================= COMPANIES (CREATIVE) ================= */}
       <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "#1976D2" }}>
         Top Companies Hiring
       </Typography>
 
       <Grid container spacing={3} sx={{ mb: 6 }}>
         {companies.map((c, index) => (
-          <Grid item xs={6} sm={4} md={2} key={c.name}>
-            <motion.div whileHover={{ scale: 1.1 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
+<Grid key={c.name} size={{ xs: 6, sm: 4, md: 2 }}>
+            <motion.div
+              whileHover={{ scale: 1.12, rotate: 1 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
+            >
               <Card
-                sx={{ p: 2, textAlign: "center", cursor: "pointer", backgroundColor: "#fff", boxShadow: "0 4px 16px rgba(0,0,0,0.04)" }}
+                sx={{
+                  p: 2,
+                  height: 150,
+                  borderRadius: 4,
+                  backgroundColor: "#fff",
+                  textAlign: "center",
+                  cursor: "pointer",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
+                  transition: "0.3s",
+                  "&:hover": {
+                    boxShadow: "0 12px 30px rgba(25,118,210,0.25)",
+                    background: "linear-gradient(135deg, #E3F2FD, #FFFFFF)"
+                  }
+                }}
                 onClick={() => navigate(`/companies/${c.name.toLowerCase()}`)}
               >
-                <img src={c.logo} alt={c.name} style={{ width: 55, marginBottom: 12 }} />
-                <Typography sx={{ fontWeight: 600, color: "#333" }}>{c.name}</Typography>
+                <img
+                  src={c.logo}
+                  alt={c.name}
+                  style={{ width: 60, height: 60, objectFit: "contain", marginBottom: 10 }}
+                />
+
+                <Typography sx={{ fontWeight: 700, color: "#0D47A1", fontSize: "0.95rem" }}>
+                  {c.name}
+                </Typography>
               </Card>
             </motion.div>
           </Grid>
         ))}
       </Grid>
 
-      {/* ACTION CARDS */}
+      {/* ================= ACTION CARDS ================= */}
       <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "#1976D2" }}>
         Continue Your Journey
       </Typography>
 
       <Grid container spacing={3}>
         {actionCards.map((card, i) => (
-          <Grid item xs={12} sm={4} key={card.title}>
-            <motion.div whileHover={{ scale: 1.04 }} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.2 }}>
+<Grid key={card.title} size={{ xs: 12, sm: 4 }}>
+            <motion.div
+              whileHover={{ scale: 1.04 }}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.2 }}
+            >
               <Card
                 sx={{
                   p: 3,
                   borderRadius: 3,
                   background: card.color,
                   cursor: "pointer",
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.06)"
                 }}
                 onClick={() => navigate(card.link)}
               >
@@ -222,6 +267,7 @@ export default function Dashboard() {
           </Grid>
         ))}
       </Grid>
+
     </Box>
   );
 }
