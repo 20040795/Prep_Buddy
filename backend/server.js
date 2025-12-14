@@ -28,7 +28,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://interviewprepbuddy.netlify.app"
+      "https://interviewprepbuddy.netlify.app",
+      "https://prep-buddy-9gc6tfcvt-20040795s-projects.vercel.app/"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
