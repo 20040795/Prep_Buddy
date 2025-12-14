@@ -17,7 +17,7 @@ export default function AskQuestion() {
       return;
     }
 
-    fetch("http://localhost:5000/api/forum", {
+    fetch(`${API_BASE_URL}/api/forum`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

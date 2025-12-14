@@ -16,7 +16,7 @@ export default function Companies() {
   const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/companies")
+    fetch(`${API_BASE_URL}/api/companies`)
       .then((res) => res.json())
       .then((data) => setCompanies(data))
       .catch((err) => console.log("Error loading companies:", err));

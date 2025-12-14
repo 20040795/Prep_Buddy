@@ -18,11 +18,11 @@ export default function Profile() {
   useEffect(() => {
     if (!user.id) return;
 
-    fetch(`http://localhost:5000/api/experiences/user/${user.id}`)
+    fetch(`${API_BASE_URL}/api/experiences/user/${user.id}`)
       .then((res) => res.json())
       .then((data) => setExperiences(data));
 
-    fetch(`http://localhost:5000/api/forum/user/${user.id}`)
+    fetch(`${API_BASE_URL}/api/forum/user/${user.id}`)
       .then((res) => res.json())
       .then((data) => setForumPosts(data));
   }, []);

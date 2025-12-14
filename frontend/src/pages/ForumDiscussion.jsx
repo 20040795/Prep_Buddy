@@ -22,7 +22,7 @@ export default function ForumDiscussion() {
   const user = JSON.parse(localStorage.getItem("user")) || {};
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/forum/${id}`)
+    fetch(`${API_BASE_URL}/api/forum/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setPost(data.post);
@@ -33,7 +33,7 @@ export default function ForumDiscussion() {
   const handleReply = () => {
     if (newReply.trim() === "") return;
 
-    fetch(`http://localhost:5000/api/forum/${id}/reply`, {
+    fetch(`${API_BASE_URL}/api/forum/${id}/reply`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export default function ForumDiscussion() {
   const handleThreadReply = (parentId) => {
     if (newReply.trim() === "") return;
 
-    fetch(`http://localhost:5000/api/forum/${id}/reply/${parentId}`, {
+    fetch(`${API_BASE_URL}/api/forum/${id}/reply/${parentId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export default function ForumDiscussion() {
       });
   };
   const handleUpvote = (replyId, index) => {
-  fetch(`http://localhost:5000/api/forum/reply/${replyId}/upvote`, {
+  fetch(`${API_BASE_URL}/api/forum/reply/${replyId}/upvote`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}` },
   })
@@ -104,7 +104,7 @@ export default function ForumDiscussion() {
     });
 };
   const handleAccept = (replyId) => {
-    fetch(`http://localhost:5000/api/forum/${id}/accept/${replyId}`, {
+    fetch(`${API_BASE_URL}/api/forum/${id}/accept/${replyId}`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
     }).then(() => {

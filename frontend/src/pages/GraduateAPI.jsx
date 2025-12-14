@@ -5,7 +5,7 @@ export default function GraduateAPI() {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/graduateapi/live")
+    fetch(`${API_BASE_URL}/api/graduateapi/live`)
       .then((res) => res.json())
       .then((data) => setJobs(data))
       .catch((err) => console.log("Graduate jobs error:", err));

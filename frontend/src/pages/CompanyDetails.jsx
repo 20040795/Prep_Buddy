@@ -16,12 +16,12 @@ export default function CompanyDetails() {
   const [experiences, setExperiences] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/companies/${companySlug}`)
+    fetch(`${API_BASE_URL}/api/companies/${companySlug}`)
       .then((res) => res.json())
       .then((data) => {
         setCompany(data);
 
-        fetch(`http://localhost:5000/api/experiences/company/${data.id}`)
+        fetch(`${API_BASE_URL}/api/experiences/company/${data.id}`)
           .then((res) => res.json())
           .then((exp) => setExperiences(exp));
       });

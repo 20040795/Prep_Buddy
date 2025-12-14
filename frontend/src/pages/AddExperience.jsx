@@ -31,7 +31,7 @@ export default function AddExperience() {
 
   // Load existing companies
   useEffect(() => {
-    fetch("http://localhost:5000/api/companies")
+    fetch(`${API_BASE_URL}/api/companies`)
       .then((res) => res.json())
       .then((data) => setCompanies(data));
   }, []);
@@ -42,7 +42,7 @@ export default function AddExperience() {
 
   // ADD NEW COMPANY
   const handleAddCompany = () => {
-    fetch("http://localhost:5000/api/companies/add", {
+    fetch(`${API_BASE_URL}/api/companies/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export default function AddExperience() {
         alert("Company added!");
 
         // Refresh companies
-        fetch("http://localhost:5000/api/companies")
+        fetch(`${API_BASE_URL}/api/companies`)
           .then((res) => res.json())
           .then((list) => {
             setCompanies(list);
@@ -73,7 +73,7 @@ export default function AddExperience() {
   };
 
   const handleSubmit = () => {
-    fetch("http://localhost:5000/api/experiences", {
+    fetch(`${API_BASE_URL}/api/experiences`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

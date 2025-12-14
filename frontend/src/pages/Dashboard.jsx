@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [topUsers, setTopUsers] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/stats")
+    fetch(`${API_BASE_URL}/api/stats`)
       .then((res) => res.json())
       .then((data) => {
         setStats({
@@ -36,10 +36,10 @@ export default function Dashboard() {
 
         // FETCH USERS FOR LEADERBOARD
         if (data.leaderboard) {
-          fetch("http://localhost:5000/api/auth/all-users")
+          fetch(`${API_BASE_URL}/api/auth/all-users`)
             .then((res) => res.json())
             .then((result) => {
-              const userList = result.users || result; // supports both formats
+              const userList = result.users || result; 
 
               const merged = data.leaderboard.map((u) => ({
                 ...u,

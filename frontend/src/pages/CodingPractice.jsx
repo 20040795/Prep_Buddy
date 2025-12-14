@@ -33,7 +33,7 @@ export default function CodingPractice() {
   const difficulty = ["Easy", "Medium", "Hard"];
 
   const handlePracticeClick = (topicLink) => {
-    fetch("http://localhost:5000/api/leaderboard/solved", {
+    fetch(`${API_BASE_URL}/api/leaderboard/solved`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id: user.id })

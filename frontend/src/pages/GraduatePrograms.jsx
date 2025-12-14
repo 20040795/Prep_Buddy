@@ -20,7 +20,7 @@ export default function GraduatePrograms() {
   const [minSalary, setMinSalary] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/graduateapi/live")
+    fetch(`${API_BASE_URL}/api/graduateapi/live`)
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);
