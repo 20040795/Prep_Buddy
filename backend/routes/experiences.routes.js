@@ -7,11 +7,10 @@ import { adminMiddleware } from "../middleware/adminMiddleware.js";
 
 const router = express.Router();
 router.post("/", authMiddleware, addExperience);
-router.get("/:companyId", getCompanyExperiences);
+router.get("/company/:companyId", getCompanyExperiences);
 router.get("/all", authMiddleware, adminMiddleware, getAllExperiences);
 router.delete("/:id", authMiddleware, adminMiddleware, deleteExperience);
-router.get("/user/:userId", getUserExperiences);   // ⭐ NEW ROUTE
-
+router.get("/user/:userId", getUserExperiences);   
 export default router;
 
 
