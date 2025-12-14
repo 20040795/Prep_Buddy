@@ -10,6 +10,7 @@ import {
   MenuItem
 } from "@mui/material";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../config.js";
 
 export default function GraduatePrograms() {
   const [jobs, setJobs] = useState([]);

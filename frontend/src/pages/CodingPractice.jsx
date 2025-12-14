@@ -9,6 +9,7 @@ import {
   Chip
 } from "@mui/material";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../config.js";
 
 export default function CodingPractice() {
   const user = JSON.parse(localStorage.getItem("user")) || {};

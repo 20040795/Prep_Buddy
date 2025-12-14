@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config.js";
 
 export default function AskQuestion() {
   const navigate = useNavigate();

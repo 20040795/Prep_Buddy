@@ -2,6 +2,8 @@ import { Box, Typography, Grid, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StatsCard from "../../components/StatsCard";
+import { API_BASE_URL } from "../config.js";
+
 
 export default function AdminDashboard() {
   const navigate = useNavigate();

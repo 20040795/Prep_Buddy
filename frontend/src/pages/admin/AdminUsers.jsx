@@ -1,5 +1,6 @@
 import { Box, Typography, Card, CardContent, Button } from "@mui/material";
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config.js";
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);

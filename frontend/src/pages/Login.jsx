@@ -8,6 +8,7 @@ import {
   Button,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
+import { API_BASE_URL } from "../config.js";
 
 const Wrapper = styled(Box)(({ theme }) => ({
   minHeight: "100vh",

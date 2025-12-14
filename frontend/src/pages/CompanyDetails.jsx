@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../config.js";
 
 export default function CompanyDetails() {
   const { companySlug } = useParams();

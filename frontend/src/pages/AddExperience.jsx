@@ -11,6 +11,7 @@ import {
   DialogActions
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config.js";
 
 export default function AddExperience() {
   const navigate = useNavigate();

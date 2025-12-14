@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../config.js";
 
 import CodeIcon from "@mui/icons-material/Code";
 import ForumIcon from "@mui/icons-material/Forum";
