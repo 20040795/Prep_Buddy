@@ -2,7 +2,14 @@ import db from "../config/db.js";
 import { updateLeaderboard } from "./leaderboardController.js";
 
 export const getPosts = (req, res) => {
-  db.query("SELECT * FROM forum_posts", (err, result) => {
+  const sql = `
+    SELECT forum_posts.*, user.name AS user_name
+    FROM forum_posts 
+    JOIN user ON user.id = forum_posts.user_id
+    ORDER BY forum_posts.created_at DESC
+  `;
+
+  db.query(sql, (err, result) => {
     if (err) return res.status(500).json({ message: "DB error" });
     res.json(result);
   });
@@ -12,37 +19,45 @@ export const addPost = (req, res) => {
   const { title, description, tags } = req.body;
   const user_id = req.user.id;
 
-  const query = `
+  const sql = `
     INSERT INTO forum_posts (user_id, title, description, tags)
     VALUES (?, ?, ?, ?)
   `;
 
-  db.query(query, [user_id, title, description, tags], (err) => {
+  db.query(sql, [user_id, title, description, tags], (err) => {
     if (err) return res.status(500).json({ message: "Insert error" });
 
     res.json({ message: "Post added successfully" });
   });
 };
 
+
 export const getPostDetails = (req, res) => {
   const { id } = req.params;
 
-  const postQuery = `SELECT * FROM forum_posts WHERE id = ?`;
-  const repliesQuery = `SELECT * FROM forum_replies WHERE post_id = ?`;
+  const postSql = `
+    SELECT forum_posts.*, user.name AS user_name
+    FROM forum_posts 
+    JOIN user ON user.id = forum_posts.user_id
+    WHERE forum_posts.id = ?
+  `;
 
-  db.query(postQuery, [id], (err, postResult) => {
+  const replySql = `
+    SELECT forum_replies.*, user.name AS user_name
+    FROM forum_replies
+    JOIN user ON user.id = forum_replies.user_id
+    WHERE forum_replies.post_id = ?
+    ORDER BY forum_replies.created_at ASC
+  `;
+
+  db.query(postSql, [id], (err, postResult) => {
     if (err) return res.status(500).json({ message: "DB error" });
+    if (postResult.length === 0) return res.status(404).json({ message: "Post not found" });
 
-    if (postResult.length === 0)
-      return res.status(404).json({ message: "Post not found" });
-
-    db.query(repliesQuery, [id], (err2, repliesResult) => {
+    db.query(replySql, [id], (err2, replyResult) => {
       if (err2) return res.status(500).json({ message: "DB error" });
 
-      res.json({
-        post: postResult[0],
-        replies: repliesResult
-      });
+      res.json({ post: postResult[0], replies: replyResult });
     });
   });
 };
@@ -52,12 +67,12 @@ export const addReply = (req, res) => {
   const { reply } = req.body;
   const user_id = req.user.id;
 
-  const query = `
+  const sql = `
     INSERT INTO forum_replies (post_id, user_id, reply)
     VALUES (?, ?, ?)
   `;
 
-  db.query(query, [id, user_id, reply], (err) => {
+  db.query(sql, [id, user_id, reply], (err) => {
     if (err) return res.status(500).json({ message: "Insert error" });
 
     updateLeaderboard(user_id, "forum_answers");
@@ -65,33 +80,79 @@ export const addReply = (req, res) => {
     res.json({ message: "Reply added" });
   });
 };
+export const upvoteReply = (req, res) => {
+  const { replyId } = req.params;
+  const user_id = req.user.id;
 
-export const deletePost = (req, res) => {
-  const { id } = req.params;
+  const checkSql = `
+    SELECT * FROM reply_upvotes WHERE reply_id = ? AND user_id = ?
+  `;
 
-  const query = "DELETE FROM forum_posts WHERE id = ?";
+  db.query(checkSql, [replyId, user_id], (err, result) => {
+    if (err) return res.status(500).json({ message: "DB error" });
 
-  db.query(query, [id], (err) => {
-    if (err) return res.status(500).json({ message: "Error deleting post" });
+    if (result.length > 0) {
+      return res.status(400).json({ message: "Already upvoted" });
+    }
+    const insertSql = `
+      INSERT INTO reply_upvotes (reply_id, user_id)
+      VALUES (?, ?)
+    `;
 
-    db.query("DELETE FROM forum_replies WHERE post_id = ?", [id]);
+    db.query(insertSql, [replyId, user_id], (err2) => {
+      if (err2) return res.status(500).json({ message: "Insert error" });
 
-    res.json({ message: "Post deleted successfully" });
+      const updateSql = `
+        UPDATE forum_replies 
+        SET upvotes = upvotes + 1 
+        WHERE id = ?
+      `;
+
+      db.query(updateSql, [replyId], (err3) => {
+        if (err3) return res.status(500).json({ message: "Update failed" });
+
+        res.json({ message: "Upvoted successfully" });
+      });
+    });
   });
 };
 
-export const getUserForumPosts = (req, res) => {
-  const { userId } = req.params;
 
-  const query = `
-    SELECT * FROM forum_posts
-    WHERE user_id = ?
-    ORDER BY created_at DESC
+/* ===========================
+   ACCEPT ANSWER
+=========================== */
+export const acceptAnswer = (req, res) => {
+  const { id, replyId } = req.params;
+
+  const sql = `
+    UPDATE forum_posts 
+    SET accepted_reply_id = ?
+    WHERE id = ?
   `;
 
-  db.query(query, [userId], (err, result) => {
-    if (err) return res.status(500).json({ message: "DB error" });
+  db.query(sql, [replyId, id], (err) => {
+    if (err) return res.status(500).json({ message: "Failed to accept answer" });
 
-    res.json(result);
+    res.json({ message: "Answer accepted" });
+  });
+};
+
+/* ===========================
+   REPLY TO A REPLY (THREADED)
+=========================== */
+export const replyToReply = (req, res) => {
+  const { id, parentId } = req.params;
+  const { reply } = req.body;
+  const user_id = req.user.id;
+
+  const sql = `
+    INSERT INTO forum_replies (post_id, user_id, reply, parent_id)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  db.query(sql, [id, user_id, reply, parentId], (err) => {
+    if (err) return res.status(500).json({ message: "Thread reply failed" });
+
+    res.json({ message: "Thread reply added" });
   });
 };
