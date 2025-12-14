@@ -24,7 +24,12 @@ import statsRoutes from "./routes/stats.routes.js";
 const app = express();
 
 // middleware
-app.use(cors({ origin: '*' })); 
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://interviewprepbuddy.netlify.app/"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // initialize DB tables
