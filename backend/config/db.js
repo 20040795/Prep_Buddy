@@ -1,21 +1,22 @@
+import dotenv from "dotenv";
+dotenv.config({ path: "./.env" }); // 👈 CRITICAL FIX
+
 import mysql from "mysql2";
 
 const db = mysql.createConnection({
-  host: "tramway.proxy.rlwy.net",
-  user: "root",
-  password: "WxShuJPiqXUrbWlcJYFmquOrBKAcRQAP",
-  database: "railway",
-  port:56882 
-
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT),
 });
-// # mysql://root:WxShuJPiqXUrbWlcJYFmquOrBKAcRQAP@tramway.proxy.rlwy.net:56882/railway
-db.connect(err => {
+
+db.connect((err) => {
   if (err) {
-    console.error("MySQL Connection Error:", err);
+    console.error("❌ MySQL Connection Error:", err.message);
   } else {
-    console.log("Connected to MySQL (Railway)");
+    console.log("✅ Connected to Railway MySQL");
   }
 });
 
 export default db;
-
