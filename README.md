@@ -36,5 +36,24 @@ Database: MySQL
 Auth: JWT  
 Deployment: Railway (DB), Netlify (frontend), Render (backend)
 
+PrepBuddy/
+ ├── backend/
+ │    ├── controllers/
+ │    ├── routes/
+ │    ├── config/
+ │    ├── middleware/
+ │    ├── db.js
+ │    ├── dbexe.js
+ │    └── server.js
+ ├── frontend/
+ │    ├── src/
+ │    │   ├── pages/
+ │    │   ├── components/
+ │    │   └── App.jsx
+ │    └── index.html
+ └── README.md
+
+
+
 
 
