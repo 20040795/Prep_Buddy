@@ -1,18 +1,21 @@
 import mysql from "mysql2";
-//database connection
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root1234",      
-  database: "dbs_portal"
-});
 
-db.connect((err) => {
+const db = mysql.createConnection({
+  host: "tramway.proxy.rlwy.net",
+  user: "root",
+  password: "WxShuJPiqXUrbWlcJYFmquOrBKAcRQAP",
+  database: "railway",
+  port:56882 
+
+});
+// # mysql://root:WxShuJPiqXUrbWlcJYFmquOrBKAcRQAP@tramway.proxy.rlwy.net:56882/railway
+db.connect(err => {
   if (err) {
-    console.log("MySQL Connection Error:", err);
+    console.error("MySQL Connection Error:", err);
   } else {
-    console.log("MySQL Connected Successfully");
+    console.log("Connected to MySQL (Railway)");
   }
 });
 
 export default db;
+
