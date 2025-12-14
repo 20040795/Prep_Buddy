@@ -9,13 +9,13 @@ export default function AdminQuestions() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/coding")
+    fetch(`${API_BASE_URL}/api/coding`)
       .then(res => res.json())
       .then(data => setQuestions(data));
   }, []);
 
   const addQuestion = () => {
-    fetch("http://localhost:5000/api/coding", {
+    fetch(`${API_BASE_URL}/api/coding`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export default function AdminQuestions() {
   };
 
   const deleteQuestion = (id) => {
-    fetch(`http://localhost:5000/api/coding/${id}`, {
+    fetch(`${API_BASE_URL}/api/coding/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     }).then(() => {

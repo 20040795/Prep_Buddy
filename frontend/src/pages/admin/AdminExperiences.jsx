@@ -6,7 +6,7 @@ export default function AdminExperiences() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/experiences/all", {
+    fetch(`${API_BASE_URL}/api/experiences/all`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -14,7 +14,7 @@ export default function AdminExperiences() {
   }, []);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/experiences/${id}`, {
+    fetch(`${API_BASE_URL}/api/experiences/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     })

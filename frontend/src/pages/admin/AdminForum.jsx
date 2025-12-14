@@ -6,13 +6,13 @@ export default function AdminForum() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/forum")
+    fetch(`${API_BASE_URL}/api/forum`)
       .then(res => res.json())
       .then(data => setPosts(data));
   }, []);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/forum/${id}`, {
+    fetch(`${API_BASE_URL}/api/forum/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     }).then(() => {

@@ -15,7 +15,7 @@ export default function AdminDashboard() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/admin/stats", {
+    fetch(`${API_BASE_URL}/api/admin/stats`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())
