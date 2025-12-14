@@ -18,12 +18,10 @@ export default function Profile() {
   useEffect(() => {
     if (!user.id) return;
 
-    // Experiences
     fetch(`http://localhost:5000/api/experiences/user/${user.id}`)
       .then((res) => res.json())
       .then((data) => setExperiences(data));
 
-    // Forum Posts
     fetch(`http://localhost:5000/api/forum/user/${user.id}`)
       .then((res) => res.json())
       .then((data) => setForumPosts(data));
@@ -66,7 +64,7 @@ export default function Profile() {
         }}
       >
         <CardContent>
-          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 ,color: "#0D47A1"}}>
             Account Details
           </Typography>
 
