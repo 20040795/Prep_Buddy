@@ -26,10 +26,15 @@ const app = express();
 // middleware
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://interviewprepbuddy.netlify.app/"],
-    credentials: true,
+    origin: [
+      "http://localhost:3000",
+      "https://interviewprepbuddy.netlify.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
   })
 );
+
 app.use(express.json());
 
 // initialize DB tables
