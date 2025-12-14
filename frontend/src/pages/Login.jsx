@@ -46,9 +46,13 @@ export default function Login() {
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        navigate("/dashboard");
+localStorage.setItem("token", data.token);
+
+setTimeout(() => {
+  navigate("/dashboard");
+}, 100);
+
       } else {
         alert(data.message);
       }
