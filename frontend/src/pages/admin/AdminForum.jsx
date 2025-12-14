@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Typography, Card, CardContent, Button } from "@mui/material";
-import { API_BASE_URL } from "../config.js";
+import { API_BASE_URL } from "../../config.js";
 
 export default function AdminForum() {
   const [posts, setPosts] = useState([]);

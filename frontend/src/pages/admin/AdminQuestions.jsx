@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Box, Typography, Card, CardContent, Button, TextField } from "@mui/material";
-import { API_BASE_URL } from "../config.js";
+import { API_BASE_URL } from "../../config.js";
 
 export default function AdminQuestions() {
   const [questions, setQuestions] = useState([]);
