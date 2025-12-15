@@ -26,7 +26,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
   "https://interviewprepbuddy.netlify.app",
-  "https://prep-buddy-9gc6tfcvt-20040795s-projects.vercel.app",
+  "https://prep-buddy-git-main-20040795s-projects.vercel.app",
   "https://prep-buddy.vercel.app",
   "https://prep-buddy-indol.vercel.app"
 ];
