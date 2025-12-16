@@ -2,105 +2,73 @@
 
 PrepBuddy is a full-stack platform for interview preparation, experience sharing, coding practice, forums, and graduate job discovery.
 
-Live Backend:
-https://prep-buddy-tic4.onrender.com/
 ---
 
 ## Overview
 
 PrepBuddy enables students to:
 
-* Prepare for interviews through shared real experiences
-* Practice coding problems
-* Ask and answer questions in a structured forum
-* Track contributions via a leaderboard
-* Discover graduate jobs with filters
+*   Prepare for interviews through shared real experiences
+*   Practice coding problems from top companies
+*   Ask and answer questions in a structured forum
+*   Track contributions via a leaderboard
+*   Discover graduate jobs with filters
 
 ---
+Live Backend:
+https://prep-buddy-tic4.onrender.com/
+
+Live Frontend:
+https://prep-buddy-9gc6tfcvt-20040795s-projects.vercel.app/
 
 ## Features
 
-### Authentication
+### Authentication & Role Management
+*   **Secure Auth**: JWT-based authentication with bcrypt password hashing.
+*   **Roles**:
+    *   `Student`: Access to all learning resources and forum.
+    *   `Admin`: Dashboard to manage users, content, and system health.
 
-* JWT-based authentication
-* Secure password hashing with bcrypt
-* Role-based access (`student`, `admin`)
+### Admin Dashboard
+*   **Overview Stats**: View total users, experiences, forum posts, and questions.
+*   **User Management**: View and delete users.
+*   **Content Management**: Moderate forum posts and interview experiences.
 
 ### Companies & Experiences
-
-* Auto-fetch company logos via Google favicon API
-* Company listing and detail pages
-* Submit interview experiences
-* View company-wise and user-wise experiences
+*   **Company Listings**: Detailed pages with fetched logos and descriptions.
+*   **Interview Experiences**: Read real experiences shared by other candidates.
+*   **Search & Filter**: Browse experiences by company.
 
 ### Forum System
-
-* Create posts with tags
-* Threaded replies (parent-based)
-* One upvote per user per reply
-* Accepted answers
-* User forum history
-
-### Leaderboard
-
-Score calculation:
-
-```
-score = problems_solved * 5
-      + experiences * 10
-      + forum_answers * 3
-```
+*   **Q&A**: Create threads with tags for discussion.
+*   **Replies**: Nested (threaded) replies for deep discussions.
+*   **Interaction**: Upvote helpful answers and mark solutions as "Accepted".
 
 ### Coding Practice
-
-* Categorized coding problems
-* Progress tracking
+*   **Problem Sets**: Curated list of coding problems.
+*   **Daily Challenge**: Featured problem of the day.
 
 ### Graduate Jobs
-
-* Live jobs fetched from external API
-* Cached in database
-* Filters:
-
-  * keyword search
-  * location
-  * salary
-
-### Profile Page
-
-* User details
-* Submitted experiences
-* Forum posts and replies
-* Contribution score
+*   **Live Listings**: Jobs fetched from external APIs.
+*   **Search**: Filter by location, salary, and role.
 
 ---
 
 ## Tech Stack
 
-Frontend
+### Frontend
+*   **React** (Vite)
+*   **Material UI (MUI)** for premium, responsive design.
+*   **Framer Motion** for animations.
 
-* React
-* Material UI
-* Framer Motion
+### Backend
+*   **Node.js** & **Express.js**
+*   **MySQL** (using `mysql2`)
+*   **JWT** for stateless authentication.
 
-Backend
-
-* Node.js
-* Express.js
-
-Database
-
-* MySQL
-
-Auth
-
-* JWT
-
-Deployment
-
-* Backend: Render
-* Database: Railway
-* Frontend: Netlify / Vercel
+### Testing
+*   **Frontend**: Vitest, React Testing Library
+*   **Backend**: Jest, Supertest
 
 ---
 
@@ -109,174 +77,205 @@ Deployment
 ```
 PrepBuddy/
  ├── backend/
- │   ├── controllers/
- │   ├── routes/
- │   ├── config/
- │   ├── middleware/
- │   ├── db.js
- │   ├── dbexe.js
- │   └── server.js
+ │   ├── controllers/      # Logic for API endpoints
+ │   ├── routes/           # API route definitions
+ │   ├── config/           # DB and env config
+ │   ├── middleware/       # Auth and Admin checks
+ │   ├── models/           # Database schemas
+ │   ├── tests/            # Backend tests
+ │   └── server.js         # Entry point
  ├── frontend/
  │   ├── src/
- │   │   ├── pages/
- │   │   ├── components/
- │   │   └── App.jsx
+ │   │   ├── pages/        # Main application pages
+ │   │   ├── components/   # Reusable UI components
+ │   │   ├── admin/        # Admin-specific pages
+ │   │   └── App.jsx       # Routing logic
  │   └── index.html
  └── README.md
 ```
 
 ---
 
-## Database Schema
+## Getting Started
 
-```sql
-CREATE TABLE user(
- id INT AUTO_INCREMENT PRIMARY KEY,
- name VARCHAR(100),
- email VARCHAR(100) UNIQUE,
- password VARCHAR(255),
- role ENUM('student','admin') DEFAULT 'student',
- created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+### Prerequisites
+*   Node.js (v14+)
+*   MySQL Database
 
-CREATE TABLE companies(
- id INT AUTO_INCREMENT PRIMARY KEY,
- name VARCHAR(100),
- slug VARCHAR(100),
- logo VARCHAR(255),
- description TEXT,
- domain VARCHAR(255)
-);
+### Installation
 
-CREATE TABLE experiences(
- id INT AUTO_INCREMENT PRIMARY KEY,
- user_id INT,
- company_id INT,
- job_role VARCHAR(100),
- difficulty VARCHAR(50),
- experience_text TEXT,
- questions TEXT,
- created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/yourusername/prepbuddy.git
+    cd PrepBuddy
+    ```
 
-CREATE TABLE forum_posts(
- id INT AUTO_INCREMENT PRIMARY KEY,
- user_id INT,
- title VARCHAR(255),
- description TEXT,
- tags VARCHAR(255),
- created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
- accepted_reply_id INT NULL
-);
+2.  **Backend Setup**
+    ```bash
+    cd backend
+    npm install
+    # Create a .env file with:
+    # DB_HOST=...
+    # DB_USER=...
+    # DB_PASS=...
+    # DB_NAME=...
+    # JWT_SECRET=...
+    npm run dev
+    ```
 
-CREATE TABLE forum_replies(
- id INT AUTO_INCREMENT PRIMARY KEY,
- post_id INT,
- user_id INT,
- reply TEXT,
- created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
- upvotes INT DEFAULT 0,
- parent_id INT NULL
-);
+3.  **Frontend Setup**
+    ```bash
+    cd frontend
+    npm install
+    npm run dev
+    ```
 
-CREATE TABLE reply_upvotes(
- id INT AUTO_INCREMENT PRIMARY KEY,
- reply_id INT,
- user_id INT,
- UNIQUE(reply_id, user_id)
-);
+4.  **Running Tests**
+    ```bash
+    # Backend tests
+    cd backend && npm test
 
-CREATE TABLE leaderboard(
- user_id INT PRIMARY KEY,
- problems_solved INT DEFAULT 0,
- experiences INT DEFAULT 0,
- forum_answers INT DEFAULT 0,
- score INT DEFAULT 0
-);
-
-CREATE TABLE graduate_jobs(
- id INT AUTO_INCREMENT PRIMARY KEY,
- title VARCHAR(255),
- company VARCHAR(255),
- location VARCHAR(255),
- apply_link VARCHAR(255),
- created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+    # Frontend tests
+    cd frontend && npm test
+    ```
 
 ---
 
-## API Routes
-
-### Auth
-
-```
-POST /api/auth/register
-POST /api/auth/login
-GET  /api/auth/all-users
-```
-
-### Companies
-
-```
-GET  /api/companies
-POST /api/companies/add
-GET  /api/companies/:slug
-```
-
-### Experiences
-
-```
-POST /api/experiences/add
-GET  /api/experiences/:companyId
-GET  /api/experiences/user/:userId
-```
-
-### Forum
-
-```
-GET    /api/forum
-POST   /api/forum                     (auth)
-GET    /api/forum/:id
-POST   /api/forum/:id/reply           (auth)
-POST   /api/forum/reply/:replyId/upvote       (auth)
-POST   /api/forum/:id/reply/:parentId         (auth)
-POST   /api/forum/:id/accept/:replyId         (auth)
-GET    /api/forum/user/:id
-```
-
-### Leaderboard
-GET  /api/leaderboard
-POST /api/leaderboard/solved
-### Graduate Jobs
-
-GET /api/graduateapi/live
-
-## Backend Logic Overview
+## API Routes Documentation
 
 ### Authentication
+```
+POST /api/auth/register    - Register a new user
+POST /api/auth/login       - Login and receive JWT
+GET  /api/auth/all-users   - Get list of all users
+```
 
-* Passwords hashed using bcrypt
-* JWT issued on login
-* authMiddleware protects routes
+### Admin (Protected)
+```
+GET    /api/admin/stats       - Get dashboard statistics
+GET    /api/admin/users       - Get all registered users
+DELETE /api/admin/users/:id   - Delete a user
+```
 
 ### Companies
-
-* Logo auto-fetched using:
-
-https://t0.gstatic.com/faviconV2?url=http://<domain>&size=128
+```
+GET    /api/companies         - List all companies
+GET    /api/companies/:slug   - Get detailed company info
+POST   /api/companies/add     - Add a new company
+DELETE /api/companies/:id     - Delete a company
+```
 
 ### Experiences
-
-* Stored with `user_id`
-* Loaded by company and user
+```
+POST   /api/experiences/add           - Submit an experience
+GET    /api/experiences/:companyId    - Get experiences for a company
+GET    /api/experiences/user/:userId  - Get a user's submitted experiences
+```
 
 ### Forum
-
-* Nested replies via `parent_id`
-* Upvotes tracked per user
-* Accepted answer stored in post
+```
+GET    /api/forum                     - List all forum posts
+POST   /api/forum                     - Create a new post
+GET    /api/forum/:id                 - Get post details and replies
+DELETE /api/forum/:id                 - Delete a post
+POST   /api/forum/:id/reply           - Reply to a post
+POST   /api/forum/:id/reply/:parentId - Reply to a reply
+POST   /api/forum/reply/:replyId/upvote - Upvote a reply
+GET    /api/forum/user/:id            - Get usage history
+```
 
 ### Graduate Jobs
+```
+GET    /api/graduateapi/live  - Fetch latest job listings
+```
 
-* External API → cached in DB → served to frontend
+## Database Schema (MySQL)
+
+```sql
+CREATE TABLE user (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  email VARCHAR(100) UNIQUE,
+  password VARCHAR(255),
+  role ENUM('student','admin') DEFAULT 'student',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE companies (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  slug VARCHAR(100),
+  logo VARCHAR(255),
+  description TEXT,
+  domain VARCHAR(255)
+);
+
+CREATE TABLE experiences (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  company_id INT,
+  job_role VARCHAR(100),
+  difficulty VARCHAR(50),
+  experience_text TEXT,
+  questions TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE forum_posts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  title VARCHAR(255),
+  description TEXT,
+  tags VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  accepted_reply_id INT NULL
+);
+
+CREATE TABLE forum_replies (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  post_id INT,
+  user_id INT,
+  reply TEXT,
+  parent_id INT NULL,
+  upvotes INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE reply_upvotes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  reply_id INT,
+  user_id INT,
+  UNIQUE(reply_id, user_id)
+);
+
+CREATE TABLE leaderboard (
+  user_id INT PRIMARY KEY,
+  problems_solved INT DEFAULT 0,
+  experiences INT DEFAULT 0,
+  forum_answers INT DEFAULT 0,
+  score INT DEFAULT 0
+);
+
+CREATE TABLE coding_questions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255),
+  difficulty VARCHAR(20),
+  link VARCHAR(255)
+);
+
+CREATE TABLE graduate_programs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  company VARCHAR(100),
+  link VARCHAR(255),
+  deadline DATE
+);
+
+CREATE TABLE graduate_jobs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255),
+  company VARCHAR(255),
+  location VARCHAR(255),
+  apply_link VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
