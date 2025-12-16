@@ -76,8 +76,7 @@ PrepBuddy/
  │   ├── routes/           # API route definitions
  │   ├── config/           # DB and env config
  │   ├── middleware/       # Auth and Admin checks
- │   ├── models/           # Database schemas
- │   ├── tests/            # Backend tests
+ │   ├── models/           # Database schemas           
  │   └── server.js         # Entry point
  ├── frontend/
  │   ├── src/
@@ -123,17 +122,6 @@ PrepBuddy/
     cd frontend
     npm install
     npm run dev
-    ```
-
-4.  **Running Tests**
-    ```bash
-    # Backend tests
-    cd backend && npm test
-
-    # Frontend tests
-    cd frontend && npm test
-    ```
-
 ---
 
 ## API Routes Documentation
@@ -274,3 +262,4 @@ CREATE TABLE graduate_jobs (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
+
