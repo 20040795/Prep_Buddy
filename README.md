@@ -65,11 +65,6 @@ https://prep-buddy-9gc6tfcvt-20040795s-projects.vercel.app/
 *   **Node.js** & **Express.js**
 *   **MySQL** (using `mysql2`)
 *   **JWT** for stateless authentication.
-
-### Testing
-*   **Frontend**: Vitest, React Testing Library
-*   **Backend**: Jest, Supertest
-
 ---
 
 ## Project Structure
