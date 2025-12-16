@@ -1,4 +1,5 @@
 import db from "./db.js";
+import bcrypt from "bcryptjs";
 
 export const initializeDatabase = () => {
 
@@ -136,4 +137,26 @@ export const initializeDatabase = () => {
   db.query(graduateJobs, (err) =>
     err ? console.log("Error creating graduate jobs table:", err) : console.log("Graduate jobs ready")
   );
+  const seedAdmin = async () => {
+    const hashedPassword = await bcrypt.hash("admin123", 10);
+    const checkAdmin = "SELECT * FROM user WHERE email = 'admin@admin.com'";
+
+    db.query(checkAdmin, (err, result) => {
+      if (err) console.log("Error checking admin:", err);
+      if (result.length === 0) {
+        const insertAdmin = `
+          INSERT INTO user (name, email, password, role)
+          VALUES ('Admin', 'admin@admin.com', ?, 'admin')
+        `;
+        db.query(insertAdmin, [hashedPassword], (err) => {
+          if (err) console.log("Error seeding admin:", err);
+          else console.log("Admin user seeded successfully");
+        });
+      } else {
+        console.log("Admin user already exists");
+      }
+    });
+  };
+
+  seedAdmin();
 };
