@@ -18,7 +18,8 @@ export default function AddExperience() {
   const token = localStorage.getItem("token");
 
   const [companies, setCompanies] = useState([]);
-  const [openAddDialog, setOpenAddDialog] = useState(false);//i asked help from gpt , initally i created an array and inside by defaukt i kept companies
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [newCompanyName, setNewCompanyName] = useState("");
 
   const [formData, setFormData] = useState({
     company_id: "",
